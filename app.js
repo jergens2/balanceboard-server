@@ -37,7 +37,9 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', index);
+app.get('/', function(req, res) {
+  res.sendFile(path.resolve(public + '/index.html'))
+})
 app.use('/users', users);
 app.use('/event', event);
 
