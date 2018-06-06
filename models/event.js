@@ -5,9 +5,10 @@ var Schema = mongoose.Schema;
 var EventSchema = new Schema(
   {
     //_id: Schema.Types.ObjectId,
-    start: {type: Date, required: true},
-    end: {type: Date, required: true},
-    description: String
+    startTime: {type: Date, required: true},
+    endTime: {type: Date, required: true},
+    description: String,
+    category: String
   }, { collection: 'event' }
 );
 

@@ -5,10 +5,9 @@ var router = express.Router();
 var event_controller = require('../controllers/eventController');
 
 
-// GET catalog home page.
 router.get('/', event_controller.event_list);
 
-router.post('/byDate', event_controller.event_date_post);
+router.get('/date/:date', event_controller.event_date_get);
 // GET request for creating a Event. NOTE This must come before routes that display Event (uses id).
 //router.get('/create', event_controller.event_create_get);
 

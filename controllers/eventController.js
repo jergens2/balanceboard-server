@@ -21,22 +21,39 @@ exports.event_detail = function(req, res) {
     res.send('NOT IMPLEMENTED: Event detail: ' + req.params.id);
 };
 
-// Display event create form on GET.
-exports.event_create_get = function(req, res) {
-    res.send('NOT IMPLEMENTED: Event create GET');
+exports.event_date_post = function(req, res){
+   console.log(req.body)
+   Event.find({
+	'startTime': {
+		"$gte": req.body.startDate,
+		"$lt": req.body.endDate
+	}
+   }, (err, events) => {
+	console.log(events);
+	if(err) return res.status(500).send(err)
+	return res.status(200).send(events);
+   }
+);
+
 };
+
+
+// Display event create form on GET.
+//exports.event_create_get = function(req, res) {
+//    res.send('NOT IMPLEMENTED: Event create GET');
+//};
 
 // Handle event create on POST.
 exports.event_create_post = function(req, res) {
     
-    const eventObject = new Event({
-        start: req.body.start,
-        end: req.body.end,
-        description: req.body.description
-    })
-    
+   const eventObject = new Event({
+   	startTime: req.body.startTime,
+	endTime: req.body.endTime,
+	description: req.body.description,
+	category: req.body.category
+   })
 
-    eventObject.save(err => {  
+   eventObject.save(err => {  
         if (err) return res.status(500).send(err);
         return res.status(200).send(eventObject);
     });
