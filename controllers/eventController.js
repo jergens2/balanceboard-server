@@ -1,4 +1,4 @@
-var Event = require('../models/event');
+const Event = require('../models/event');
 
 exports.index = function(req, res) {
     res.send('NOT IMPLEMENTED: Site Home Page');
@@ -22,7 +22,6 @@ exports.event_detail = function(req, res) {
 };
 
 exports.event_date_post = function(req, res){
-   console.log(req.body)
    Event.find({
 	'startTime': {
 		"$gte": req.body.startDate,
@@ -65,8 +64,18 @@ exports.event_delete_get = function(req, res) {
 };
 
 // Handle event delete on POST.
-exports.event_delete_post = function(req, res) {
-    res.send('NOT IMPLEMENTED: Event delete POST');
+
+exports.event_delete_post = function (req, res) {
+    Event.findByIdAndRemove(req.params.id, (err, event) => {
+        if (err) return res.status(500).send(err);
+        // We'll create a simple object to send back with a message and the id of the document that was removed
+        // You can really do this however you want, though.
+        const response = {
+            message: "Event successfully deleted",
+            id: event._id
+        };
+        return res.status(200).send(response);
+    });
 };
 
 // Display event update form on GET.
