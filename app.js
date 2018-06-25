@@ -6,8 +6,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 
-var index = require('./routes/index');
-var users = require('./routes/users');
+var authentication = require('./routes/authentication');
 var event = require('./routes/event');
 
 var config = require('./config.json');
@@ -43,13 +42,13 @@ app.get('/', function(req, res) {
 
 app.use(function (req, res, next) {
   res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+  res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Observe');
   res.setHeader('Access-Control-Allow-Methods', 'POST, GET, PATCH, DELETE, OPTIONS');
   next();
 });
 
-app.use('/users', users);
-app.use('/event', event);
+app.use('/api/authentication', authentication);
+app.use('/api/event', event);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
