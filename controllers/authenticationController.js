@@ -27,3 +27,19 @@ exports.register = function (req, res, next) {
 exports.authenticate = function (req, res, next) {
 
 };
+
+exports.validateNewEmail = function (req, res, next){
+    User.findOne({ 'email': req.params.email }, 
+        (err, account) => {
+
+            if(err) return res.status(500).json({ message: 'Error', data: err})
+            if (!account){
+                return res.status(200).json({
+                    message: 'Success: account does not exist',
+                    data: null
+                });
+            }
+        
+            return res.status(200).json({ message: 'Account Exists', data: account.email});
+       })
+}
