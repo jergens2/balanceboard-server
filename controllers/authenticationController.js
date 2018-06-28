@@ -27,13 +27,16 @@ exports.register = function (req, res, next) {
 };
 
 exports.authenticate = function (req, res, next) {
+    let foundUser;
     User.findOne({ 'email': req.body.email})
         .then((user)=>{
+            
             if(!user){
                 return res.status(401).json({
                     message: "Authorization failed.  Could not find an account with email '" + req.body.email + "'"
                 })
             }
+            foundUser = user;
             return bcrypt.compare(req.body.password, user.password)
         })
         .then((result) => {
@@ -44,8 +47,8 @@ exports.authenticate = function (req, res, next) {
             }
             const token = jwt.sign(
                 {
-                    email: user.email, 
-                    userId: user._id
+                    email: foundUser.email, 
+                    userId: foundUser._id
                 },
                 secret,
                 {
