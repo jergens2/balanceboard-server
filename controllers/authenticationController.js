@@ -2,6 +2,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const User = require('../models/user');
 
+// 2018-06-29:  this secret is temporary until better key management is implemented
 const secret = "1D78454C81ED9CB8E1348851F25DFE11BE0DCA6C277C5AC1CAB58B7B196B81C30F87F047F25871DAC35BA5ACA760EFF07F58A438FC2CDC1956EBC265E1";
 
 exports.register = function (req, res, next) {
