@@ -9,9 +9,16 @@ exports.event_list = function(req, res, next) {
     Event.find((err, events) => {  
         // Note that this error doesn't mean nothing was found,
         // it means the database had an error while searching, hence the 500 status
-        if (err) return res.status(500).send(err)
+        if (err)
+            return res.status(500).json({
+                message: 'Error',
+                data: err
+            })
         // send the list of all people
-        return res.status(200).send(events);
+        return res.status(200).json({
+            message: 'Events found' ,
+            data: events
+        });
     });
     
 };
@@ -29,8 +36,16 @@ exports.event_date_post = function(req, res){
 	}
    }, (err, events) => {
 	console.log(events);
-	if(err) return res.status(500).send(err)
-	return res.status(200).send(events);
+    if(err) 
+        return res.status(500).json({
+            message: 'Error',
+            data: err
+        })
+
+	return res.status(200).json({
+        message: 'Events found' ,
+        data: events
+    });
    }
 );
 
@@ -46,15 +61,21 @@ exports.event_date_post = function(req, res){
 exports.event_create_post = function(req, res) {
     
    const eventObject = new Event({
-   	startTime: req.body.startTime,
-	endTime: req.body.endTime,
+   	startTime: req.body.startTimeISO,
+	endTime: req.body.endTimeISO,
 	description: req.body.description,
 	category: req.body.category
    })
 
-   eventObject.save(err => {  
-        if (err) return res.status(500).send(err);
-        return res.status(200).send(eventObject);
+   console.log(eventObject);
+
+   eventObject.save((err) => {  
+        if (err) 
+            return res.status(500).json({message: 'Error', data: err});
+        return res.status(200).json({
+            message:'Event saved', 
+            data: eventObject
+        });
     });
 };
 
@@ -69,12 +90,11 @@ exports.event_delete_post = function (req, res) {
     Event.findByIdAndRemove(req.params.id, (err, event) => {
         if (err) return res.status(500).send(err);
         // We'll create a simple object to send back with a message and the id of the document that was removed
-        // You can really do this however you want, though.
-        const response = {
-            message: "Event successfully deleted",
-            id: event._id
-        };
-        return res.status(200).send(response);
+        
+        return res.status(200).json({
+            message: 'Event successfully deleted', 
+            data: event._id
+        });
     });
 };
 
