@@ -58,7 +58,10 @@ exports.authenticate = function (req, res, next) {
             );
             res.status(200).json({
                 message: "Authentication successful.",
-                data: token
+                data: {
+                    "user": foundUser,
+                    "token": token                
+                }
             })
 
          })
@@ -84,4 +87,16 @@ exports.validateNewEmail = function (req, res, next){
         
             return res.status(200).json({ message: 'Account Exists', data: account.email});
        })
-}
+};
+
+exports.getUserById = function (req, res, next){
+    User.findById(req.params.id, 
+        (err, user)=>{
+            if(err) return res.status(500).json({message:'Error', data: err})
+            if(!user){
+                return res.status(500).json({message:"Could not find user.", data: req.params.id})
+            }
+            return res.status(200).json({message: "Found user by localStorage ID", data: user})
+        }
+    );
+};

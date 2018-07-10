@@ -9,6 +9,7 @@ const authenticationController = require('../controllers/authenticationControlle
 router.post('/authenticate', authenticationController.authenticate);
 router.post('/register', authenticationController.register);
 router.get('/validateNewEmail/:email', authenticationController.validateNewEmail);
+router.get('/getUserById/:id', authenticationController.getUserById);
 
 
 
