@@ -18,6 +18,7 @@ const genericDataController = require('../controllers/genericDataController');
 router.post('/create', genericDataController.dataEntryPostCreate);
 router.post('/update/:id', genericDataController.dataEntryUpdate);
 router.get('/:id', genericDataController.dataEntryGet);
+router.get('/byUser/:userId', genericDataController.dataEntryGetByUser)
 router.delete('/:id', genericDataController.dataEntryDelete);
 
 

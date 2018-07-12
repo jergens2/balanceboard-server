@@ -10,6 +10,7 @@ var GenericDataEntrySchema = new Schema(
     startTime: {type: String, required: false},
     endTime: {type: String, required: false},
     category: String,
+    dataType: {type:String, required: true},
     dataObject: Object
   }, 
   { 

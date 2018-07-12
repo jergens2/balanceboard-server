@@ -1,3 +1,4 @@
+var ObjectId = require('mongoose').Types.ObjectId; 
 const GenericDataEntry = require('../models/genericData');
 
 
@@ -9,6 +10,7 @@ exports.dataEntryPostCreate = function (req, res, next) {
         startTimeISO: req.body.startTimeISO,
         endTimeISO: req.body.endTimeISO,
         category: req.body.category,
+        dataType: req.body.dataType,
         dataObject: req.body.dataObject
     });
     genericDataEntry.save((err) => {
@@ -46,6 +48,21 @@ exports.dataEntryGet = function (req, res, next) {
             return res.status(500).json({message:"Could not find GenericDataEntry object", data: req.params.id});
         }
         return res.status(200).json({message: "Successfully found GenericDataEntry object", data: dataEntry});
+    });
+};
+
+exports.dataEntryGetByUser = function (req, res, next) {
+    GenericDataEntry.find({'userId': new ObjectId(req.params.userId)}, (err, dataEntries)=>{
+        if(err){
+            return res.status(500).json({
+                message: "DB Error finding GenericDataEntry object",
+                data: err
+            });
+        }
+        if(!dataEntries){
+            return res.status(500).json({message:"Could not find GenericDataEntry objects", data: req.params.userId});
+        }
+        return res.status(200).json({message: "Successfully found GenericDataEntry objects", data: dataEntries});
     });
 };
 
