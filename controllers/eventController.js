@@ -36,7 +36,6 @@ exports.event_date_post = function (req, res) {
         },
         'userId': req.body.userId
     }, (err, events) => {
-        console.log(events);
         if (err)
             return res.status(500).json({
                 message: 'Error',

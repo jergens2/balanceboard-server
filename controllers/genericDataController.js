@@ -29,8 +29,8 @@ exports.dataEntryDelete = function (req, res, next) {
     });
 };
 exports.dataEntryUpdate = function (req, res, next) {
-    let updatedDataEntry = req.body.dataEntry;
-    GenericDataEntry.findByIdAndUpdate(req.params.id, updatedDataEntry, (err, dataEntry)=>{
+    let updatedDataEntry = req.body;
+    GenericDataEntry.findByIdAndUpdate(req.params.id, updatedDataEntry, {new: true}, (err, dataEntry)=>{
         if(err) return res.status(500).json({message:'DB error updating GenericDataEntry object', data: err});
         if(!dataEntry) return res.status(500).json({message: "Error updating GenericDataEntry object", data: req.parms.id});
         return res.status(200).json({message:"Successfully update GenericDataEntry object", data: dataEntry});
