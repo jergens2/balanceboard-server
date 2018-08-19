@@ -6,9 +6,7 @@ var GenericDataEntrySchema = new Schema(
   {
     //_id: Schema.Types.ObjectId,
     userId: {type: Schema.Types.ObjectId, ref: 'User', required: true },
-    createdTimeISO: { type: String, required: true},
-    startTime: {type: String, required: false},
-    endTime: {type: String, required: false},
+    dateUpdatedISO: { type: String, required: true},
     category: String,
     dataType: {type:String, required: true},
     dataObject: Object

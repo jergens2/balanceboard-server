@@ -6,9 +6,7 @@ const GenericDataEntry = require('../models/genericData');
 exports.dataEntryPostCreate = function (req, res, next) {
     const genericDataEntry = new GenericDataEntry({
         userId: req.body.userId,
-        createdTimeISO: req.body.createdTimeISO,
-        startTimeISO: req.body.startTimeISO,
-        endTimeISO: req.body.endTimeISO,
+        dateUpdatedISO: req.body.dateUpdatedISO,
         category: req.body.category,
         dataType: req.body.dataType,
         dataObject: req.body.dataObject
