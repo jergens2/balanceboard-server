@@ -9,6 +9,8 @@ var mongoose = require('mongoose');
 var authentication = require('./routes/authentication');
 var event = require('./routes/event');
 var genericData = require('./routes/genericData');
+var timeMark = require('./routes/timeMark');
+var categorizedActivity = require('./routes/categorizedActivity');
 
 var config = require('./config.json');
 
@@ -51,6 +53,8 @@ app.use(function (req, res, next) {
 app.use('/api/authentication', authentication);
 app.use('/api/event', event);
 app.use('/api/genericData', genericData);
+app.use('/api/timeMark', timeMark);
+app.use('/api/categorizedActivity', categorizedActivity);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
