@@ -1,4 +1,4 @@
-
+var ObjectId = require('mongoose').Types.ObjectId; 
 const TimeMark = require('../models/timeMark');
 
 
@@ -28,23 +28,23 @@ exports.delete = function (req, res, next) {
 };
 exports.update = function (req, res, next) {
     let updatedTimeMark = req.body;
-    TimeMark.findByIdAndUpdate(req.params.id, updatedTimeMark, {new: true}, (err, dataEntry)=>{
+    TimeMark.findByIdAndUpdate(req.params.id, updatedTimeMark, {new: true}, (err, timeMark)=>{
         if(err) return res.status(500).json({message:'DB error updating TimeMark object', data: err});
-        if(!dataEntry) return res.status(500).json({message: "Error updating TimeMark object", data: req.parms.id});
-        return res.status(200).json({message:"Successfully update TimeMark object", data: dataEntry});
+        if(!timeMark) return res.status(500).json({message: "Error updating TimeMark object", data: req.parms.id});
+        return res.status(200).json({message:"Successfully update TimeMark object", data: timeMark});
     });
 };
 exports.get = function (req, res, next) {
-    TimeMark.findById(req.params.id, (err, dataEntry)=>{
+    TimeMark.find({'userId': new ObjectId(req.params.userId)}, (err, timeMarks)=>{
         if(err){
             return res.status(500).json({
                 message: "DB Error finding TimeMark object",
                 data: err
             });
         }
-        if(!dataEntry){
-            return res.status(500).json({message:"Could not find TimeMark object", data: req.params.id});
+        if(!timeMarks){
+            return res.status(500).json({message:"Could not find TimeMarks", data: req.params.id});
         }
-        return res.status(200).json({message: "Successfully found TimeMark object", data: dataEntry});
+        return res.status(200).json({message: "Successfully found TimeMarks", data: timeMarks});
     });
 };
