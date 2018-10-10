@@ -21,9 +21,9 @@ exports.create = function (req, res, next) {
     });
 };
 exports.delete = function (req, res, next) {
-    TimeMark.findByIdAndRemove(req.body.id, (err, res)=>{
-        if(err) return res.status(500).json({message:'DB error deleting TimeMark object', data: err});
-        return res.status(204).json({message:"TimeMark object successfully deleted"});
+    TimeMark.findByIdAndRemove(req.params.id, (err, docs)=>{
+        if(err) return res.status(500).json({message:'DB error deleting TimeMark object', data: req.params.id});
+        return res.status(200).json({message:"TimeMark object successfully deleted", data: req.params.id});
     });
 };
 exports.update = function (req, res, next) {
