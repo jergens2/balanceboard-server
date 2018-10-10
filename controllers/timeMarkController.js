@@ -6,15 +6,12 @@ const TimeMark = require('../models/timeMark');
 exports.create = function (req, res, next) {
     const timeMark = new TimeMark({
         userId: req.body.userId,
-        previousTimeMarkId: req.body.previousTimeMarkId,
+        //previousTimeMarkId: req.body.previousTimeMarkId,
         timeISO: req.body.timeISO,
-        title: req.body.timeISO,
         description: req.body.description,
         activities: req.body.activities
-        
-
     });
-    categorizedActivity.save((err) => {
+    timeMark.save((err) => {
         if (err)
             return res.status(500).json({ message: 'DB Error creating TimeMark object', data: err });
         return res.status(200).json({

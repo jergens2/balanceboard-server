@@ -12,7 +12,7 @@ var TimeMarkSchema = new Schema(
     timeISO: {type: String, required: true},
     title: String,
     description: String,
-    activities: [Schema.Types.ObjectId]
+    activities: []
   }, 
   { 
     collection: 'timeMark' 

@@ -7,10 +7,10 @@ const controller = require('../controllers/timeMarkController');
 
 
 
-// router.post('/create', controller.dataEntryPostCreate);
-// router.post('/update/:id', controller.dataEntryUpdate);
-// router.get('/:id', controller.dataEntryGet);
-// router.delete('/:id', controller.dataEntryDelete);
+router.post('/create', controller.create);
+router.post('/update/:id', controller.update);
+router.get('/:id', controller.get);
+router.delete('/:id', controller.delete);
 
 
 
