@@ -43,6 +43,10 @@ app.get('/', function(req, res) {
   res.sendFile(path.resolve(public + '/index.html'))
 })
 
+// app.get('*', function(req, res){
+//   res.send('what???', 404);
+// });
+
 app.use(function (req, res, next) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization, observe');
@@ -55,6 +59,7 @@ app.use('/api/event', event);
 app.use('/api/genericData', genericData);
 app.use('/api/timeMark', timeMark);
 app.use('/api/categorizedActivity', categorizedActivity);
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

@@ -4,20 +4,68 @@ const TimeMark = require('../models/timeMark');
 
 
 exports.create = function (req, res, next) {
+
+    let precedingTimeMarkId = null;
+    let followingTimeMarkId = null;
+
+    if(req.body.precedingTimeMarkId == "NO_PRECEDING_TIME_MARK"){
+        precedingTimeMarkId = null;
+    }else{
+        precedingTimeMarkId = req.body.precedingTimeMarkId;
+    }
+
+    if(req.body.followingTimeMarkId == "NO_FOLLOWING_TIME_MARK"){
+        followingTimeMarkId = null;
+    }else{
+        followingTimeMarkId = req.body.followingTimeMarkId;
+    }
+
     const timeMark = new TimeMark({
         userId: req.body.userId,
-        //previousTimeMarkId: req.body.previousTimeMarkId,
+        precedingTimeMarkId: precedingTimeMarkId,
+        followingTimeMarkId: followingTimeMarkId,
         timeISO: req.body.timeISO,
         description: req.body.description,
-        activities: req.body.activities
+        activities: req.body.activities,
     });
     timeMark.save((err) => {
-        if (err)
+        if (err) {
             return res.status(500).json({ message: 'DB Error creating TimeMark object', data: err });
-        return res.status(200).json({
-            message: 'TimeMark object saved',
-            data: timeMark
-        });
+        }else{
+            // //Now that we've saved the new time mark which points to the previous time mark, the previous time mark needs to be updated to point to the new time mark.
+            // let responseMessage = "Successfully created new timeMark. ";
+            // let data = {};
+            // data.currentTimeMark = timeMark;
+            // data.precedingTimeMark = null;
+
+            // if(precedingTimeMarkId){
+            //     let timeMarkToUpdate = null;
+            //     TimeMark.findById(precedingTimeMarkId, (err, previousTimeMark)=>{
+            //         if(err){
+            //             responseMessage += "Could not update previous timeMark.";
+            //             //return res.status(500).json({ message: responseMessage, data: err });
+            //         }else{
+            //             timeMarkToUpdate = previousTimeMark;
+            //             timeMarkToUpdate.followingTimeMarkId = timeMark._id;
+            //             TimeMark.findByIdAndUpdate(precedingTimeMarkId, timeMarkToUpdate, {new: true}, (err, timeMark)=>{
+            //                 if(err){
+            //                     //return res.status(500).json({ message: "Error updating previous timeMark", data: err });
+            //                 }else{
+            //                     data.precedingTimeMark = timeMark;
+            //                     //return res.status(200).json({message: "Success with both previous and current timeMark", data: data});
+            //                 }
+                            
+            //             })
+    
+            //         }
+            //     });
+            // }
+            return res.status(200).json({
+                message: 'TimeMark object saved',
+                data: timeMark
+            });
+
+        }
     });
 };
 exports.delete = function (req, res, next) {

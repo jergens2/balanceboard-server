@@ -1,5 +1,5 @@
 var mongoose = require('mongoose');
-var CategorizedActivity = require('./categorizedActivity');
+// var CategorizedActivity = require('./categorizedActivity');
 
 
 var Schema = mongoose.Schema;
@@ -8,7 +8,8 @@ var TimeMarkSchema = new Schema(
   {
     //_id: Schema.Types.ObjectId,
     userId: {type: Schema.Types.ObjectId, ref: 'User', required: true },
-    previousTimeMarkId: { type: Schema.Types.ObjectId, ref: 'TimeMark'},
+    precedingTimeMarkId: { type: Schema.Types.ObjectId, ref: 'TimeMark'},
+    followingTimeMarkId: { type: Schema.Types.ObjectId, ref: 'TimeMark'},
     timeISO: {type: String, required: true},
     title: String,
     description: String,
