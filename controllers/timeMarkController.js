@@ -24,7 +24,9 @@ exports.create = function (req, res, next) {
         userId: req.body.userId,
         precedingTimeMarkId: precedingTimeMarkId,
         followingTimeMarkId: followingTimeMarkId,
-        timeISO: req.body.timeISO,
+
+        startTimeISO: req.body.startTimeISO,
+        endTimeISO: req.body.endTimeISO,
         description: req.body.description,
         activities: req.body.activities,
     });
