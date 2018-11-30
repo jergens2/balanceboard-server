@@ -1,6 +1,8 @@
 var ObjectId = require('mongoose').Types.ObjectId; 
 const TimeMark = require('../models/timeMark');
 
+var moment = require('moment');
+
 
 
 exports.create = function (req, res, next) {
@@ -85,7 +87,10 @@ exports.update = function (req, res, next) {
     });
 };
 exports.get = function (req, res, next) {
-    TimeMark.find({'userId': new ObjectId(req.params.userId)}, (err, timeMarks)=>{
+    let startTime = moment(req.params.start);
+    let endTime = moment(req.params.end);
+    console.log("Start time", startTime.format('YYYY'), "end time", moment(endTime));
+    TimeMark.find({'userId': ObjectId(req.params.userId), 'endTimeISO' :{$gt :req.params.start}, 'startTimeISO': {$lt : req.params.end}}, (err, timeMarks)=>{
         if(err){
             return res.status(500).json({
                 message: "DB Error finding TimeMark object",
@@ -96,5 +101,5 @@ exports.get = function (req, res, next) {
             return res.status(500).json({message:"Could not find TimeMarks", data: req.params.id});
         }
         return res.status(200).json({message: "Successfully found TimeMarks", data: timeMarks});
-    });
+    })
 };

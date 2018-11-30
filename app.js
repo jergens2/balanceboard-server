@@ -60,6 +60,9 @@ app.use('/api/genericData', genericData);
 app.use('/api/timeMark', timeMark);
 app.use('/api/categorizedActivity', categorizedActivity);
 
+app.use('/', function(req, res) {
+  res.sendFile(path.resolve('public/index.html'))
+})
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
