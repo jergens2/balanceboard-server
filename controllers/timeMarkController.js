@@ -3,6 +3,7 @@ const TimeMark = require('../models/timeMark');
 
 var moment = require('moment');
 
+var colors = require('colors');
 
 
 exports.create = function (req, res, next) {
@@ -89,7 +90,6 @@ exports.update = function (req, res, next) {
 exports.get = function (req, res, next) {
     let startTime = moment(req.params.start);
     let endTime = moment(req.params.end);
-    console.log("Start time", startTime.format('YYYY'), "end time", moment(endTime));
     TimeMark.find({'userId': ObjectId(req.params.userId), 'endTimeISO' :{$gt :req.params.start}, 'startTimeISO': {$lt : req.params.end}}, (err, timeMarks)=>{
         if(err){
             return res.status(500).json({
@@ -101,5 +101,42 @@ exports.get = function (req, res, next) {
             return res.status(500).json({message:"Could not find TimeMarks", data: req.params.id});
         }
         return res.status(200).json({message: "Successfully found TimeMarks", data: timeMarks});
+    })
+};
+
+
+exports.getMonth = function (req, res, next) {    
+    let startOfMonth = moment(req.params.start).startOf('month').toISOString();
+    let endOfMonth = moment(req.params.start).endOf('month').toISOString();
+    TimeMark.find({'userId': ObjectId(req.params.userId), 'endTimeISO' :{$lt : endOfMonth}, 'startTimeISO': {$gt : startOfMonth}}, (err, timeMarks)=>{
+        if(err){
+            return res.status(500).json({
+                message: "DB Error finding TimeMarks for month",
+                data: err
+            });
+        }else{
+            if(!timeMarks){
+                return res.status(500).json({message:"No TimeMarks found for month of " + moment(startOfMonth).format('MMMM'), data: req.params.id});
+            }else{
+                let timeMarkDates = [];
+                let startOfDay = startOfMonth;
+                let endOfDay = moment(startOfDay).endOf('day').toISOString();
+                while(endOfDay <= endOfMonth){
+                    let thisDaysTimeMarks = [];
+                    for(let timeMark of timeMarks){
+                        if((timeMark.startTimeISO >= startOfDay) && (timeMark.endTimeISO <= endOfDay)) {
+                            thisDaysTimeMarks.push(timeMark);
+                        }
+                    }
+                    timeMarkDates.push({
+                        date: moment(startOfDay).format('YYYY-MM-DD'),
+                        timeMarks: thisDaysTimeMarks.length
+                    })
+                    startOfDay = moment(startOfDay).add(1, 'days').toISOString();
+                    endOfDay = moment(endOfDay).add(1,'days').toISOString();
+                }
+                return res.status(200).json({message: "Successfully found TimeMarks", data: timeMarkDates});
+            }
+        }
     })
 };
