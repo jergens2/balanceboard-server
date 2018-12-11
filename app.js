@@ -58,7 +58,7 @@ app.use('/api/authentication', authentication);
 app.use('/api/event', event);
 app.use('/api/genericData', genericData);
 app.use('/api/timeMark', timeMark);
-app.use('/api/categorizedActivity', categorizedActivity);
+app.use('/api/activity', categorizedActivity);
 
 app.use('/', function(req, res) {
   res.sendFile(path.resolve('public/index.html'))

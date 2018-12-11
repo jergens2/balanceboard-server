@@ -88,9 +88,9 @@ exports.update = function (req, res, next) {
     });
 };
 exports.get = function (req, res, next) {
-    let startTime = moment(req.params.start);
-    let endTime = moment(req.params.end);
-    TimeMark.find({'userId': ObjectId(req.params.userId), 'endTimeISO' :{$gt :req.params.start}, 'startTimeISO': {$lt : req.params.end}}, (err, timeMarks)=>{
+    let startTime = moment(req.params.start).toISOString();
+    let endTime = moment(req.params.end).toISOString();
+    TimeMark.find({'userId': ObjectId(req.params.userId), 'endTimeISO' :{$gt : startTime}, 'startTimeISO': {$lt : endTime}}, (err, timeMarks)=>{
         if(err){
             return res.status(500).json({
                 message: "DB Error finding TimeMark object",

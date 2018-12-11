@@ -5,15 +5,18 @@ var Schema = mongoose.Schema;
 var CategorizedActivitySchema = new Schema(
   {
     //_id: Schema.Types.ObjectId,
+    treeId: {type: String, required: true},
     name: {type: String, required: true},
+    description: String,
+
     userId: {type: Schema.Types.ObjectId, ref: 'User', required: true },
-    timeMarkId: { type: Schema.Types.ObjectId, ref: 'TimeMark', required: true},
-    parentCategoryId: {type: Schema.Types.ObjectId, ref: 'CategorizedActivity'},
-    // childrenCategories: [CategorizedActivity],
-    childrenCategories: [String],
+
+    parentCategoryId: String,
+    // childrenCategories: [String],
+
     icon: String,
     color: String,
-    description: String,
+    
   }, 
   { 
     collection: 'categorizedActivity' 
