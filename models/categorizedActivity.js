@@ -11,7 +11,7 @@ var CategorizedActivitySchema = new Schema(
 
     userId: {type: Schema.Types.ObjectId, ref: 'User', required: true },
 
-    parentCategoryId: String,
+    parentTreeId: String,
     // childrenCategories: [String],
 
     icon: String,

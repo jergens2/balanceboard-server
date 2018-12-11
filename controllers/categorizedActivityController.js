@@ -37,10 +37,10 @@ exports.createDefault = function (req, res, next) {
     let newDefaultActivities = [];
     for(let activity of defaultActivities){
         const newDefaultActivity = new CategorizedActivity({
-            treeId: activity.id,
+            treeId: activity.treeId,
             name: activity.name,
             userId: activity.userId,
-            parentCategoryId: activity.parentActivityId,
+            parentTreeId: activity.parentTreeId,
             icon: '',
             color: activity.color,
             description: activity.description
@@ -57,7 +57,7 @@ exports.create = function (req, res, next) {
     const categorizedActivity = new CategorizedActivity({
         name: req.body.name,
         userId: req.body.userId,
-        parentCategoryId: req.body.parentActivityId,
+        parentTreeId: req.body.parentTreeId,
         icon: '',
         color: req.body.color,
         description: req.body.description
@@ -65,7 +65,7 @@ exports.create = function (req, res, next) {
     });
 
     console.log("Parent category was: ".green);
-    console.log(req.body.parentActivityId);
+    console.log(req.body.parentTreeId);
 
     categorizedActivity.save((err) => {
         if (err) {
