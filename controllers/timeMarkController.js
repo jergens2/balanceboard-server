@@ -8,6 +8,7 @@ var colors = require('colors');
 
 exports.create = function (req, res, next) {
 
+
     let precedingTimeMarkId = null;
     let followingTimeMarkId = null;
 
@@ -28,11 +29,13 @@ exports.create = function (req, res, next) {
         precedingTimeMarkId: precedingTimeMarkId,
         followingTimeMarkId: followingTimeMarkId,
 
-        startTimeISO: req.body.startTimeISO,
-        endTimeISO: req.body.endTimeISO,
+        startTimeISO: req.body._startTimeISO,
+        endTimeISO: req.body._endTimeISO,
         description: req.body.description,
         activities: req.body.activities,
     });
+
+
     timeMark.save((err) => {
         if (err) {
             return res.status(500).json({ message: 'DB Error creating TimeMark object', data: err });
