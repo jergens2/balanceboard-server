@@ -84,9 +84,9 @@ exports.delete = function (req, res, next) {
 };
 exports.update = function (req, res, next) {
     let updatedTimeMark = req.body;
-    TimeMark.findByIdAndUpdate(req.params.id, updatedTimeMark, {new: true}, (err, timeMark)=>{
+    TimeMark.findByIdAndUpdate(req.body.id, updatedTimeMark, {new: true}, (err, timeMark)=>{
         if(err) return res.status(500).json({message:'DB error updating TimeMark object', data: err});
-        if(!timeMark) return res.status(500).json({message: "Error updating TimeMark object", data: req.parms.id});
+        if(!timeMark) return res.status(500).json({message: "Error updating TimeMark object", data: req.body.id});
         return res.status(200).json({message:"Successfully update TimeMark object", data: timeMark});
     });
 };
