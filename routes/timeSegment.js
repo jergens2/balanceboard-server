@@ -3,7 +3,7 @@ const router = express.Router();
 
 const verifyAuth = require("../middleware/verifyAuth");
 
-const controller = require('../controllers/timeMarkController');
+const controller = require('../controllers/timeSegmentController');
 
 
 router.get('/month/:userId/:start', controller.getMonth);

@@ -4,12 +4,10 @@ var mongoose = require('mongoose');
 
 var Schema = mongoose.Schema;
 
-var TimeMarkSchema = new Schema(
+var TimeSegmentSchema = new Schema(
   {
     //_id: Schema.Types.ObjectId,
     userId: {type: Schema.Types.ObjectId, ref: 'User', required: true },
-    precedingTimeMarkId: { type: Schema.Types.ObjectId, ref: 'TimeMark'},
-    followingTimeMarkId: { type: Schema.Types.ObjectId, ref: 'TimeMark'},
     startTimeISO: {type: String, required: true},
     endTimeISO: {type: String, required: true},
     // timeISO: {type: String, required: true},
@@ -18,9 +16,9 @@ var TimeMarkSchema = new Schema(
     activities: []
   }, 
   { 
-    collection: 'timeMark' 
+    collection: 'timeSegment' 
   }
 );
 
 //Export model
-module.exports = mongoose.model('TimeMark', TimeMarkSchema);
+module.exports = mongoose.model('TimeSegment', TimeSegmentSchema);
