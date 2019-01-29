@@ -6,11 +6,11 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 
-var authentication = require('./routes/authentication');
-var event = require('./routes/event');
-var genericData = require('./routes/genericData');
-var timeSegment = require('./routes/timeSegment');
-var categorizedActivity = require('./routes/categorizedActivity');
+var authenticationRoutes = require('./routes/authentication');
+var userRoutes = require('./routes/userPreferences');
+var genericDataRoutes = require('./routes/genericData');
+var timeSegmentRoutes = require('./routes/timeSegment');
+var userDefinedActivityRoutes = require('./routes/userDefinedActivity');
 
 var config = require('./config.json');
 
@@ -54,11 +54,12 @@ app.use(function (req, res, next) {
   next();
 });
 
-app.use('/api/authentication', authentication);
-app.use('/api/event', event);
-app.use('/api/genericData', genericData);
-app.use('/api/timeSegment', timeSegment);
-app.use('/api/activity', categorizedActivity);
+app.use('/api/authentication', authenticationRoutes);
+app.use('/api/user', userRoutes )
+app.use('/api/genericData', genericDataRoutes);
+app.use('/api/timeSegment', timeSegmentRoutes);
+app.use('/api/activity', userDefinedActivityRoutes);
+
 
 app.use('/', function(req, res) {
   res.sendFile(path.resolve('public/index.html'))

@@ -9,8 +9,10 @@ exports.register = function (req, res, next) {
     bcrypt.hash(req.body.password, 10)
         .then(hash => {
             const user = new User({
-                email: req.body.email,
-                password: hash
+                email: req.body.user.email.toLowerCase(),
+                name: req.body.user.name,
+                password: hash,
+                userSettings: req.body.user.userSettings
             });
             user.save()
                 .then(result => {
@@ -29,12 +31,12 @@ exports.register = function (req, res, next) {
 
 exports.authenticate = function (req, res, next) {
     let foundUser;
-    User.findOne({ 'email': req.body.email})
+    User.findOne({ 'email': req.body.user.email.toLowerCase()})
         .then((user)=>{
             
             if(!user){
                 return res.status(401).json({
-                    message: "Authorization failed.  Could not find an account with email '" + req.body.email + "'"
+                    message: "Authorization failed.  Could not find an account with email '" + req.body.user.email + "'"
                 })
             }
             foundUser = user;
