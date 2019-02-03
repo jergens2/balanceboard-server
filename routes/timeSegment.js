@@ -13,7 +13,8 @@ router.post('/update', controller.update);
 
 router.post('/delete', controller.delete);
 
-// router.get('/month/:userId/:start', controller.getMonth);
+
+router.get('/activity_data/:treeId', controller.getActivityData);
 
 
 module.exports = router;

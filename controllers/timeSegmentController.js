@@ -8,26 +8,8 @@ var colors = require('colors');
 
 exports.create = function (req, res, next) {
 
-
-    // let precedingTimeSegmentId = null;
-    // let followingTimeSegmentId = null;
-
-    // if(req.body.precedingTimeSegmentId == "NO_PRECEDING_TIME_MARK"){
-    //     precedingTimeSegmentId = null;
-    // }else{
-    //     precedingTimeSegmentId = req.body.precedingTimeSegmentId;
-    // }
-
-    // if(req.body.followingTimeSegmentId == "NO_FOLLOWING_TIME_MARK"){
-    //     followingTimeSegmentId = null;
-    // }else{
-    //     followingTimeSegmentId = req.body.followingTimeSegmentId;
-    // }
-
     const timeSegment = new TimeSegment({
         userId: req.body.userId,
-        // precedingTimeSegmentId: precedingTimeSegmentId,
-        // followingTimeSegmentId: followingTimeSegmentId,
 
         startTimeISO: req.body._startTimeISO,
         endTimeISO: req.body._endTimeISO,
@@ -116,3 +98,20 @@ exports.getMonth = function (req, res, next) {
         }
     })
 };
+
+exports.getActivityData = function (req, res, next) {    
+    TimeSegment.find({"activities.activityTreeId": req.params.treeId }, (err, timeSegments)=>{
+        if (err){
+            return res.status(500).json({
+                message: "Error finding activity data for " + req.params.treeId,
+                data: err
+            });
+        }else{
+            if(!timeSegments){
+                return res.status(500).json({message:"No activity data found"});
+            }else{
+                return res.status(200).json({message: "Activity data:", data: timeSegments});
+            }
+        }
+    });
+}

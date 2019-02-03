@@ -55,7 +55,7 @@ app.use(function (req, res, next) {
 });
 
 app.use('/api/authentication', authenticationRoutes);
-app.use('/api/user', userRoutes )
+app.use('/api/user', userRoutes );
 app.use('/api/genericData', genericDataRoutes);
 app.use('/api/timeSegment', timeSegmentRoutes);
 app.use('/api/activity', userDefinedActivityRoutes);
