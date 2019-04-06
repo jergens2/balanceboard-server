@@ -11,6 +11,7 @@ var userRoutes = require('./routes/userPreferences');
 var genericDataRoutes = require('./routes/genericData');
 var timeSegmentRoutes = require('./routes/timeSegment');
 var userDefinedActivityRoutes = require('./routes/userDefinedActivity');
+var dayTemplateRoutes = require('./routes/dayTemplate');
 
 var config = require('./config.json');
 
@@ -59,6 +60,7 @@ app.use('/api/user', userRoutes );
 app.use('/api/genericData', genericDataRoutes);
 app.use('/api/timeSegment', timeSegmentRoutes);
 app.use('/api/activity', userDefinedActivityRoutes);
+app.use('/api/dayTemplate', dayTemplateRoutes);
 
 
 app.use('/', function(req, res) {
