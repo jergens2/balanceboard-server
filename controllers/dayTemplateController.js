@@ -53,11 +53,6 @@ exports.delete = function (req, res, next) {
     });
 };
 exports.update = function (req, res, next) {
-    /*
-        When this method receives the updatedDayTemplate, the properties startTimeISO and endTimeISO actually are: _startTimeISO and _endTimeISO , with the underscores, from the front-end.
-        so, we just make a new one and update the existing one by ID
-    */
-
     const updatedDayTemplate = new DayTemplate({
         _id: req.body.id,
         userId: req.body.userId,
