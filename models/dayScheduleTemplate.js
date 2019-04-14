@@ -4,7 +4,7 @@ var mongoose = require('mongoose');
 
 var Schema = mongoose.Schema;
 
-var DayTemplateSchema = new Schema(
+var DayScheduleTemplateSchema = new Schema(
   {
     //_id: Schema.Types.ObjectId,
     userId: {type: Schema.Types.ObjectId, ref: 'User', required: true },
@@ -15,10 +15,10 @@ var DayTemplateSchema = new Schema(
     discretionaryTimeRanges: {type: [], required: true},
   }, 
   { 
-    collection: 'dayTemplate' 
+    collection: 'dayScheduleTemplate' 
   }
 );
 
 //Export model
-module.exports = mongoose.model('DayTemplate', DayTemplateSchema);
+module.exports = mongoose.model('DayScheduleTemplate', DayScheduleTemplateSchema);
 

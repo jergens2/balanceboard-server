@@ -3,7 +3,7 @@ const router = express.Router();
 
 const verifyAuth = require("../middleware/verifyAuth");
 
-const controller = require('../controllers/dayTemplateController');
+const controller = require('../controllers/dayScheduleTemplateController');
 
 
 
