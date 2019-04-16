@@ -11,7 +11,8 @@ var ObjectiveSchema = new Schema(
     description: {type: String, required: true},
     startDateISO: {type: String, required: true},
     dueDateISO: {type: String, required: false},
-
+    completionDateISO: {type: String, required: false},
+    isComplete: {type: Boolean, require: false}
   }, 
   { 
     collection: 'objective' 

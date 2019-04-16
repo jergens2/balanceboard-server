@@ -68,23 +68,26 @@ exports.delete = function (req, res, next) {
     });
 };
 exports.update = function (req, res, next) {
+    console.log("updating objective.  incoming request:", req.body );
 
-    const objective = new Objective({
+    const updateObjective = new Objective({
         _id: req.body.id,
         userId: req.body.userId,
         description: req.body.description,
         startDateISO: req.body.startDateISO,
-        dueDateISO: req.body.dueDateISO
-
+        dueDateISO: req.body.dueDateISO,
+        completionDateISO: req.body.completionDateISO,
+        isComplete: req.body.isComplete,
     });
 
 
 
-    Objective.findByIdAndUpdate(req.body.id, updatedObjective, { new: true }, (err, objective) => {
+    Objective.findByIdAndUpdate(req.body.id, updateObjective, { new: true }, (err, objective) => {
 
         if (err) return res.status(500).json({ message: 'DB error updating Objective object', data: err });
         if (!objective) return res.status(500).json({ message: "Error updating Objective object", data: req.body.id });
 
+        console.log("updated objective: ", objective);
         return res.status(200).json({ message: "Successfully update Objective object", data: objective });
     });
 };
