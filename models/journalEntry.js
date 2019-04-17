@@ -12,7 +12,7 @@ var JournalEntrySchema = new Schema(
     forDateISO: {type: String, required: false},
     dateCreatedISO: {type: String, required: true},
     dateModifiedISO: {type: String, required: true},
-    type: String,
+    type: Number,
     textContent: String,
     tags: [String]
   }, 
