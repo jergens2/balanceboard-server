@@ -4,7 +4,7 @@ var mongoose = require('mongoose');
 
 var Schema = mongoose.Schema;
 
-var JournalEntrySchema = new Schema(
+var NotebookEntrySchema = new Schema(
   {
     //_id: Schema.Types.ObjectId,
     userId: {type: Schema.Types.ObjectId, ref: 'User', required: true },
@@ -17,9 +17,9 @@ var JournalEntrySchema = new Schema(
     tags: [String]
   }, 
   { 
-    collection: 'journal' 
+    collection: 'notebook' 
   }
 );
 
 //Export model
-module.exports = mongoose.model('JournalEntry', JournalEntrySchema);
+module.exports = mongoose.model('NotebookEntry', NotebookEntrySchema);

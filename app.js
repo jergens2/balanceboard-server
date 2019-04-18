@@ -15,7 +15,7 @@ var dayScheduleTemplateRoutes = require('./routes/dayScheduleTemplate');
 var scheduleRotationRoutes = require('./routes/scheduleRotation');
 var dayRoutes = require('./routes/day');
 var objectiveRoutes = require('./routes/objective');
-var journalRoutes = require('./routes/journalEntry');
+var notebookRoutes = require('./routes/notebookEntry');
 
 var config = require('./config.json');
 
@@ -68,7 +68,7 @@ app.use('/api/dayScheduleTemplate', dayScheduleTemplateRoutes);
 app.use('/api/scheduleRotation', scheduleRotationRoutes);
 app.use('/api/day', dayRoutes);
 app.use('/api/objective', objectiveRoutes);
-app.use('/api/journal', journalRoutes);
+app.use('/api/notebook', notebookRoutes);
 
 
 app.use('/', function(req, res) {
