@@ -1,6 +1,6 @@
 var ObjectId = require('mongoose').Types.ObjectId;
 const Day = require('../models/day');
-const Objective = require('../models/objective');
+const Task = require('../models/task');
 
 var moment = require('moment');
 
@@ -35,17 +35,17 @@ exports.getByDate = function (req, res, next) {
             return res.status(404).json({ message: "Could not find Day", data: req.params.id });
         }
 
-        Objective.findById(day.primaryObjectiveId, (err, objective) => {
+        Task.findById(day.primaryTaskId, (err, task) => {
             if (err) {
                 return res.status(500).json({
-                    message: "DB Error finding Objective from Day",
+                    message: "DB Error finding Task from Day",
                     data: err
                 });
             }
-            if(!objective){
-                return res.status(200).json({ message: "Found day but not primary objective", data: {day: day, objective: null} });
+            if(!task){
+                return res.status(200).json({ message: "Found day but not primary task", data: {day: day, task: null} });
             }else{
-                return res.status(200).json({ message: "Successfully found Day", data: {day:day, objective:objective} });
+                return res.status(200).json({ message: "Successfully found Day", data: {day:day, task:task} });
             }
         })
 
@@ -60,7 +60,7 @@ exports.create = function (req, res, next) {
 
         userId: req.body.userId,
         dateYYYYMMDD: req.body.dateYYYYMMDD,
-        primaryObjectiveId: req.body.primaryObjectiveId
+        primaryTaskId: req.body.primaryTaskId
 
     });
 
@@ -88,7 +88,7 @@ exports.update = function (req, res, next) {
         _id: req.body.id,
         userId: req.body.userId,
         dateYYYYMMDD: req.body.dateYYYYMMDD,
-        primaryObjectiveId: req.body.primaryObjectiveId
+        primaryTaskId: req.body.primaryTaskId
     });
 
 

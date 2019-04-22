@@ -3,12 +3,12 @@ const router = express.Router();
 
 const verifyAuth = require("../middleware/verifyAuth");
 
-const controller = require('../controllers/objectiveController');
+const controller = require('../controllers/taskController');
 
 
 
 router.get('/:userId', controller.get);
-router.get('/:userId/:objectiveId', controller.getById)
+router.get('/:userId/:taskId', controller.getById)
 
 router.post('/create', controller.create);
 router.post('/update', controller.update);
