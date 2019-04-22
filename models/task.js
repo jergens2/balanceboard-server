@@ -14,7 +14,7 @@ var TaskSchema = new Schema(
     dueDateISO: {type: String, required: false},
     completionDateISO: {type: String, required: false},
     isComplete: {type: Boolean, require: true},
-    priority: {type: String, required }
+    priority: {type: String, required: true }
   }, 
   { 
     collection: 'task' 

@@ -42,9 +42,11 @@ exports.create = function (req, res, next) {
 
     const task = new Task({
         userId: req.body.userId,
+        title: req.body.title,
         description: req.body.description,
         startDateISO: req.body.startDateISO,
-        dueDateISO: req.body.dueDateISO
+        dueDateISO: req.body.dueDateISO,
+        priority: req.body.priority
 
     });
 
@@ -73,11 +75,14 @@ exports.update = function (req, res, next) {
     const updateTask = new Task({
         _id: req.body.id,
         userId: req.body.userId,
+        title: req.body.title,
         description: req.body.description,
         startDateISO: req.body.startDateISO,
         dueDateISO: req.body.dueDateISO,
         completionDateISO: req.body.completionDateISO,
         isComplete: req.body.isComplete,
+        priority: req.body.priority
+
     });
 
 
