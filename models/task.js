@@ -8,11 +8,13 @@ var TaskSchema = new Schema(
   {
     //_id: Schema.Types.ObjectId,
     userId: {type: Schema.Types.ObjectId, ref: 'User', required: true },
-    description: {type: String, required: true},
+    title: {type: String, require: true},
+    description: String,
     startDateISO: {type: String, required: true},
     dueDateISO: {type: String, required: false},
     completionDateISO: {type: String, required: false},
-    isComplete: {type: Boolean, require: true}
+    isComplete: {type: Boolean, require: true},
+    priority: {type: String, required }
   }, 
   { 
     collection: 'task' 
