@@ -34,7 +34,8 @@ exports.create = function (req, res, next) {
         type: req.body.type,
         textContent: req.body.textContent,
         title: req.body.title,
-        tags: req.body.tags
+        tags: req.body.tags,
+        data: req.body.data,
 
     });
 
@@ -72,7 +73,8 @@ exports.update = function (req, res, next) {
         type: req.body.type,
         textContent: req.body.textContent,
         title: req.body.title,
-        tags: req.body.tags
+        tags: req.body.tags,
+        data: req.body.data,
     });
 
 

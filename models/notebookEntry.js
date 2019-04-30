@@ -15,7 +15,7 @@ var NotebookEntrySchema = new Schema(
     type: {type: Number, required: true},
     textContent: {type: String, required: true},
     tags: {type: [String], required: true},
-    data: {type: {}, required: true},
+    data: {type: Schema.Types.Mixed, required: true},
   }, 
   { 
     collection: 'notebook' 
