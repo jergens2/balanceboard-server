@@ -16,6 +16,8 @@ var scheduleRotationRoutes = require('./routes/scheduleRotation');
 var dayRoutes = require('./routes/day');
 var taskRoutes = require('./routes/task');
 var notebookRoutes = require('./routes/notebookEntry');
+var serverScriptsRoutes = require('./routes/serverScripts');
+
 
 var config = require('./config.json');
 
@@ -69,6 +71,7 @@ app.use('/api/scheduleRotation', scheduleRotationRoutes);
 app.use('/api/day', dayRoutes);
 app.use('/api/task', taskRoutes);
 app.use('/api/notebook', notebookRoutes);
+app.use('/api/serverScripts', serverScriptsRoutes)
 
 
 app.use('/', function(req, res) {
