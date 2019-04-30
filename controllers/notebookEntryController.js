@@ -28,7 +28,7 @@ exports.create = function (req, res, next) {
 
     const notebookEntry = new NotebookEntry({
         userId: req.body.userId,
-        forDateISO: req.body.forDate,
+        journalDateISO: req.body.journalDate,
         dateCreatedISO: req.body.dateCreated,
         dateModifiedISO: req.body.dateModified,
         type: req.body.type,
@@ -66,7 +66,13 @@ exports.update = function (req, res, next) {
     const updateNotebookEntry = new NotebookEntry({
         _id: req.body.id,
         userId: req.body.userId,
-
+        journalDateISO: req.body.journalDate,
+        dateCreatedISO: req.body.dateCreated,
+        dateModifiedISO: req.body.dateModified,
+        type: req.body.type,
+        textContent: req.body.textContent,
+        title: req.body.title,
+        tags: req.body.tags
     });
 
 

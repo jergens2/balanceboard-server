@@ -8,13 +8,14 @@ var NotebookEntrySchema = new Schema(
   {
     //_id: Schema.Types.ObjectId,
     userId: {type: Schema.Types.ObjectId, ref: 'User', required: true },
-    title: {type: String, required: false},
-    forDateISO: {type: String, required: false},
+    title: {type: String, required: true},
+    journalDateISO: {type: String, required: true},
     dateCreatedISO: {type: String, required: true},
     dateModifiedISO: {type: String, required: true},
-    type: Number,
-    textContent: String,
-    tags: [String]
+    type: {type: Number, required: true},
+    textContent: {type: String, required: true},
+    tags: {type: [String], required: true},
+    data: {type: {}, required: true},
   }, 
   { 
     collection: 'notebook' 

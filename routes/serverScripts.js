@@ -7,7 +7,7 @@ const controller = require('../controllers/serverScripts');
 
 
 
-router.get('/cleanse-notes', controller.cleanseNotes);
+// router.get('/cleanse-notes', controller.cleanseNotes);
 
 
 
