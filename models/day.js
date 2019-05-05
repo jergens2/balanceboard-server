@@ -9,7 +9,10 @@ var DaySchema = new Schema(
     //_id: Schema.Types.ObjectId,
     userId: {type: Schema.Types.ObjectId, ref: 'User', required: true },
     dateYYYYMMDD: {type: String, required: true},
-    primaryTaskId: {type: Schema.Types.ObjectId, ref: 'Task', required: false },
+    activityData: {type: [Schema.Types.Mixed], required: true },
+    dailyTaskListData: {type: [Schema.Types.Mixed], required: true },
+    taskData: {type: [Schema.Types.Mixed], required: true },
+    timeSegmentData: {type: [Schema.Types.Mixed], required: true },
     //daily task list
   }, 
   { 

@@ -9,6 +9,7 @@ const controller = require('../controllers/dayController');
 
 router.get('/:userId/', controller.get);
 router.get('/:userId/:date' , controller.getByDate);
+router.get('/:userId/:start/:end', controller.getByRange);
 
 router.post('/create', controller.create);
 router.post('/update', controller.update);
