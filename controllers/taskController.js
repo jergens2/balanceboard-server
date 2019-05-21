@@ -43,12 +43,17 @@ exports.create = function (req, res, next) {
     const task = new Task({
         userId: req.body.userId,
         title: req.body.title,
+        priority: req.body.priority,
+        groupCategory: req.body.groupCategory,
         description: req.body.description,
-        startDateISO: req.body.startDateISO,
+        createdDateISO: req.body.createdDateISO,
+        hasDueDate: req.body.hasDueDate,
         dueDateISO: req.body.dueDateISO,
-        priority: req.body.priority
-
+        completionDateISO: req.body.completionDateISO,
+        isComplete: req.body.isComplete,
     });
+
+
 
 
     task.save((err) => {
@@ -64,7 +69,8 @@ exports.create = function (req, res, next) {
     });
 };
 exports.delete = function (req, res, next) {
-    Task.findByIdAndDelete({ '_id': new ObjectId(req.body.id) }, (err, doc) => {
+    console.log("Deleting: " , req.body);
+    Task.findByIdAndDelete({ '_id': new ObjectId(req.body._id) }, (err, doc) => {
         if (err) return res.status(500).json({ message: 'DB error deleting Task object', data: null });
         return res.status(200).json({ message: "Successfully deleted Task object", data: null });
     });
@@ -76,14 +82,19 @@ exports.update = function (req, res, next) {
         _id: req.body.id,
         userId: req.body.userId,
         title: req.body.title,
+        priority: req.body.priority,
+        groupCategory: req.body.groupCategory,
         description: req.body.description,
-        startDateISO: req.body.startDateISO,
+        createdDateISO: req.body.createdDateISO,
+        hasDueDate: req.body.hasDueDate,
         dueDateISO: req.body.dueDateISO,
         completionDateISO: req.body.completionDateISO,
         isComplete: req.body.isComplete,
-        priority: req.body.priority
 
     });
+
+
+
 
 
 

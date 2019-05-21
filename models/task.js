@@ -9,12 +9,15 @@ var TaskSchema = new Schema(
     //_id: Schema.Types.ObjectId,
     userId: {type: Schema.Types.ObjectId, ref: 'User', required: true },
     title: {type: String, require: true},
+    priority: {type: Number, required: true },
+    groupCategory: {type: String, require: true},
     description: String,
-    startDateISO: {type: String, required: true},
-    dueDateISO: {type: String, required: false},
+    createdDateISO: {type: String, required: true},
+    hasDueDate: {type: Boolean, required: true},
+    dueDateISO: {type: String, required: true},
     completionDateISO: {type: String, required: false},
     isComplete: {type: Boolean, require: true},
-    priority: {type: String, required: true }
+    
   }, 
   { 
     collection: 'task' 
@@ -23,4 +26,3 @@ var TaskSchema = new Schema(
 
 //Export model
 module.exports = mongoose.model('Task', TaskSchema);
-
