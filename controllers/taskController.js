@@ -40,11 +40,12 @@ exports.getById = function( req, res, next) {
 
 exports.create = function (req, res, next) {
 
+    console.log("Creating task: " , req.body);
     const task = new Task({
         userId: req.body.userId,
         title: req.body.title,
         priority: req.body.priority,
-        groupCategory: req.body.groupCategory,
+        directoryPath: req.body.directoryPath,
         description: req.body.description,
         createdDateISO: req.body.createdDateISO,
         hasDueDate: req.body.hasDueDate,
@@ -83,7 +84,7 @@ exports.update = function (req, res, next) {
         userId: req.body.userId,
         title: req.body.title,
         priority: req.body.priority,
-        groupCategory: req.body.groupCategory,
+        directoryPath: req.body.directoryPath,
         description: req.body.description,
         createdDateISO: req.body.createdDateISO,
         hasDueDate: req.body.hasDueDate,

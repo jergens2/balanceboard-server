@@ -10,7 +10,7 @@ var TaskSchema = new Schema(
     userId: {type: Schema.Types.ObjectId, ref: 'User', required: true },
     title: {type: String, require: true},
     priority: {type: Number, required: true },
-    groupCategory: {type: String, require: true},
+    directoryPath: {type: String, require: true},
     description: String,
     createdDateISO: {type: String, required: true},
     hasDueDate: {type: Boolean, required: true},
@@ -26,3 +26,4 @@ var TaskSchema = new Schema(
 
 //Export model
 module.exports = mongoose.model('Task', TaskSchema);
+
