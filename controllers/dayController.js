@@ -76,7 +76,7 @@ exports.create = function (req, res, next) {
         activityData: req.body.activityData,
         dailyTaskListData: req.body.dailyTaskListData,
         taskData: req.body.taskData,
-        timeSegmentData: req.body.timeSegmentData
+        timelogEntryData: req.body.timelogEntryData
 
     });
 
@@ -107,7 +107,7 @@ exports.update = function (req, res, next) {
         activityData: req.body.activityData,
         dailyTaskListData: req.body.dailyTaskListData,
         taskData: req.body.taskData,
-        timeSegmentData: req.body.timeSegmentData
+        timelogEntryData: req.body.timelogEntryData
     });
 
 

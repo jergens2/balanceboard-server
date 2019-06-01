@@ -9,7 +9,7 @@ var mongoose = require('mongoose');
 var authenticationRoutes = require('./routes/authentication');
 var userRoutes = require('./routes/userPreferences');
 var genericDataRoutes = require('./routes/genericData');
-var timeSegmentRoutes = require('./routes/timeSegment');
+var timelogEntryRoutes = require('./routes/timelogEntry');
 var userDefinedActivityRoutes = require('./routes/userDefinedActivity');
 var dayScheduleTemplateRoutes = require('./routes/dayScheduleTemplate');
 var scheduleRotationRoutes = require('./routes/scheduleRotation');
@@ -64,7 +64,7 @@ app.use(function (req, res, next) {
 app.use('/api/authentication', authenticationRoutes);
 app.use('/api/user', userRoutes );
 app.use('/api/genericData', genericDataRoutes);
-app.use('/api/timeSegment', timeSegmentRoutes);
+app.use('/api/timelogEntry', timelogEntryRoutes);
 app.use('/api/activity', userDefinedActivityRoutes);
 app.use('/api/dayScheduleTemplate', dayScheduleTemplateRoutes);
 app.use('/api/scheduleRotation', scheduleRotationRoutes);

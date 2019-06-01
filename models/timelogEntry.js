@@ -4,7 +4,7 @@ var mongoose = require('mongoose');
 
 var Schema = mongoose.Schema;
 
-var TimeSegmentSchema = new Schema(
+var TimelogEntrySchema = new Schema(
   {
     //_id: Schema.Types.ObjectId,
     userId: {type: Schema.Types.ObjectId, ref: 'User', required: true },
@@ -16,9 +16,9 @@ var TimeSegmentSchema = new Schema(
     activities: []
   }, 
   { 
-    collection: 'timeSegment' 
+    collection: 'timelogEntry' 
   }
 );
 
 //Export model
-module.exports = mongoose.model('TimeSegment', TimeSegmentSchema);
+module.exports = mongoose.model('TimelogEntry', TimelogEntrySchema);

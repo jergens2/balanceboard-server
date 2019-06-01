@@ -12,7 +12,7 @@ var DaySchema = new Schema(
     activityData: {type: [Schema.Types.Mixed], required: true },
     dailyTaskListData: {type: [Schema.Types.Mixed], required: true },
     taskData: {type: [Schema.Types.Mixed], required: true },
-    timeSegmentData: {type: [Schema.Types.Mixed], required: true },
+    timelogEntryData: {type: [Schema.Types.Mixed], required: true },
     //daily task list
   }, 
   { 
