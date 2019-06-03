@@ -10,11 +10,10 @@ exports.create = function (req, res, next) {
 
     const timelogEntry = new TimelogEntry({
         userId: req.body.userId,
-
-        startTimeISO: req.body._startTimeISO,
-        endTimeISO: req.body._endTimeISO,
+        startTimeISO: req.body.startTimeISO,
+        endTimeISO: req.body.endTimeISO,
         description: req.body.description,
-        activities: req.body.activities,
+        itleActivities: req.body.itleActivities,
     });
 
 
@@ -32,6 +31,7 @@ exports.create = function (req, res, next) {
     });
 };
 exports.delete = function (req, res, next) {
+    console.log("Deleting", req.body.id);
     TimelogEntry.findByIdAndDelete({ '_id': new ObjectId(req.body.id) }, (err, doc) => {
         if (err) return res.status(500).json({ message: 'DB error deleting TimelogEntry object', data: null });
         return res.status(200).json({ message: "Successfully deleted TimelogEntry object", data: null });

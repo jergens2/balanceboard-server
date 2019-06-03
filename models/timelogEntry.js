@@ -13,7 +13,7 @@ var TimelogEntrySchema = new Schema(
     // timeISO: {type: String, required: true},
     title: String,
     description: String,
-    activities: []
+    itleActivities: [],
   }, 
   { 
     collection: 'timelogEntry' 
