@@ -38,23 +38,17 @@ exports.delete = function (req, res, next) {
     });
 };
 exports.update = function (req, res, next) {
-    /*
-        When this method receives the updatedTimelogEntry, the properties startTimeISO and endTimeISO actually are: _startTimeISO and _endTimeISO , with the underscores, from the front-end.
-        so, we just make a new one and update the existing one by ID
-    */
 
     const updatedTimelogEntry = new TimelogEntry({
         _id: req.body.id,
         userId: req.body.userId,
-        startTimeISO: req.body._startTimeISO,
-        endTimeISO: req.body._endTimeISO,
+        startTimeISO: req.body.startTimeISO,
+        endTimeISO: req.body.endTimeISO,
         description: req.body.description,
-        activities: req.body.activities,
+        itleActivities: req.body.itleActivities,
     });
 
-
     TimelogEntry.findByIdAndUpdate( req.body.id, updatedTimelogEntry, { new: true }, (err, timelogEntry) => {
-
         if (err) return res.status(500).json({ message: 'DB error updating TimelogEntry object', data: err });
         if (!timelogEntry) return res.status(500).json({ message: "Error updating TimelogEntry object", data: req.body.id });
 
@@ -64,7 +58,6 @@ exports.update = function (req, res, next) {
 exports.get = function (req, res, next) {
     let startTime = moment(req.params.start).toISOString();
     let endTime = moment(req.params.end).toISOString();
-    console.log("finding from: "+startTime + "  - to - " + endTime);
     TimelogEntry.find(
         {
             'userId': ObjectId(req.params.userId),
