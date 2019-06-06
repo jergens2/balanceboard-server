@@ -13,10 +13,11 @@ var timelogEntryRoutes = require('./routes/timelogEntry');
 var userDefinedActivityRoutes = require('./routes/userDefinedActivity');
 var dayScheduleTemplateRoutes = require('./routes/dayScheduleTemplate');
 var scheduleRotationRoutes = require('./routes/scheduleRotation');
-var dayRoutes = require('./routes/day');
+var dayDataRoutes = require('./routes/dayData');
 var taskRoutes = require('./routes/task');
 var notebookRoutes = require('./routes/notebookEntry');
 var serverScriptsRoutes = require('./routes/serverScripts');
+var recurringTaskDefinitionRoutes = require('./routes/recurringTaskDefinition');
 
 
 var config = require('./config.json');
@@ -68,10 +69,11 @@ app.use('/api/timelogEntry', timelogEntryRoutes);
 app.use('/api/activity', userDefinedActivityRoutes);
 app.use('/api/dayScheduleTemplate', dayScheduleTemplateRoutes);
 app.use('/api/scheduleRotation', scheduleRotationRoutes);
-app.use('/api/day', dayRoutes);
+app.use('/api/day-data', dayDataRoutes);
 app.use('/api/task', taskRoutes);
 app.use('/api/notebook', notebookRoutes);
-app.use('/api/serverScripts', serverScriptsRoutes)
+app.use('/api/serverScripts', serverScriptsRoutes);
+app.use('/api/recurringTaskDefinition', recurringTaskDefinitionRoutes);
 
 
 app.use('/', function(req, res) {

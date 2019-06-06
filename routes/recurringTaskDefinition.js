@@ -3,13 +3,12 @@ const router = express.Router();
 
 const verifyAuth = require("../middleware/verifyAuth");
 
-const controller = require('../controllers/dayController');
+const controller = require('../controllers/recurringTaskDefinitionController');
 
 
 
-router.get('/:userId/', controller.get);
-router.get('/:userId/:date' , controller.getByDate);
-router.get('/:userId/:start/:end', controller.getByRange);
+router.get('/:userId', controller.get);
+
 
 router.post('/create', controller.create);
 router.post('/update', controller.update);
