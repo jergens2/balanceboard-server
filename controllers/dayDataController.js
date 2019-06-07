@@ -68,7 +68,7 @@ exports.getByRange = function (req, res, next) {
 
 
 exports.create = function (req, res, next) {
-    console.log("Creating DayData object");
+    // console.log("Creating DayData object");
     const newDayData = new DayData({
 
         userId: req.body.userId,
@@ -101,7 +101,7 @@ exports.delete = function (req, res, next) {
     });
 };
 exports.update = function (req, res, next) {
-    console.log("Updating".yellow, req.body);
+    // console.log("Updating".yellow, req.body);
     const updatedDay = new DayData({
         _id: req.body.id,
         userId: req.body.userId,
