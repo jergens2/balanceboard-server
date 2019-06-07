@@ -1,5 +1,5 @@
 var ObjectId = require('mongoose').Types.ObjectId;
-const DayData = require('../models/DayData');
+const DayData = require('../models/dayData');
 
 
 var moment = require('moment');
