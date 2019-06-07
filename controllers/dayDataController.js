@@ -69,25 +69,26 @@ exports.getByRange = function (req, res, next) {
 
 exports.create = function (req, res, next) {
     console.log("Creating DayData object");
-    const DayData = new DayData({
+    const newDayData = new DayData({
 
         userId: req.body.userId,
         dateYYYYMMDD: req.body.dateYYYYMMDD,
         activityData: req.body.activityData,
-        dailyTaskListData: req.body.dailyTaskListData,
+        dailyTaskListItems: req.body.dailyTaskListItems,
         taskData: req.body.taskData,
         timelogEntryData: req.body.timelogEntryData
 
     });
 
 
-    DayData.save((err) => {
+    newDayData.save((err) => {
         if (err) {
+            console.log("ERROR", err)
             return res.status(500).json({ message: 'DB Error creating DayData object', data: err });
         } else {
             return res.status(200).json({
                 message: 'DayData object saved',
-                data: DayData
+                data: newDayData
             });
 
         }
@@ -100,12 +101,13 @@ exports.delete = function (req, res, next) {
     });
 };
 exports.update = function (req, res, next) {
+    console.log("Updating".yellow, req.body);
     const updatedDay = new DayData({
         _id: req.body.id,
         userId: req.body.userId,
         dateYYYYMMDD: req.body.dateYYYYMMDD,
         activityData: req.body.activityData,
-        dailyTaskListData: req.body.dailyTaskListData,
+        dailyTaskListItems: req.body.dailyTaskListItems,
         taskData: req.body.taskData,
         timelogEntryData: req.body.timelogEntryData
     });
