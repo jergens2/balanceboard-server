@@ -2,7 +2,7 @@ var mongoose = require('mongoose');
 
 var Schema = mongoose.Schema;
 
-var UserDefinedActivitySchema = new Schema(
+var ActivityCategoryDefinitionSchema = new Schema(
   {
     //_id: Schema.Types.ObjectId,
     treeId: {type: String, required: true},
@@ -19,9 +19,9 @@ var UserDefinedActivitySchema = new Schema(
     
   }, 
   { 
-    collection: 'userDefinedActivity' 
+    collection: 'activityCategoryDefinition' 
   }
 );
 
 //Export model
-module.exports = mongoose.model('UserDefinedActivity', UserDefinedActivitySchema);
+module.exports = mongoose.model('ActivityCategoryDefinition', ActivityCategoryDefinitionSchema);
