@@ -19,6 +19,7 @@ var serverScriptsRoutes = require('./routes/serverScripts');
 var recurringTaskDefinitionRoutes = require('./routes/recurringTaskDefinition');
 var dailyTaskListRoutes = require('./routes/dailyTaskList');
 var activityDayDataRoutes = require('./routes/activityDayData');
+var socialRoutes = require('./routes/social');
 
 
 var config = require('./config.json');
@@ -75,7 +76,8 @@ app.use('/api/notebook', notebookRoutes);
 app.use('/api/serverScripts', serverScriptsRoutes);
 app.use('/api/recurringTaskDefinition', recurringTaskDefinitionRoutes);
 app.use('/api/daily-task-list', dailyTaskListRoutes);
-app.use('/api/activity-day-data', activityDayDataRoutes)
+app.use('/api/activity-day-data', activityDayDataRoutes);
+app.use('/api/social', socialRoutes);
 
 
 app.use('/', function(req, res) {
