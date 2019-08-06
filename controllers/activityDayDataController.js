@@ -106,7 +106,6 @@ exports.update = function (req, res, next) {
     });
 };
 exports.updateByDate = function (req, res, next) {
-    console.log("Updating by date".green)
     const newActivityDayData = new ActivityDayData({
         userId: req.body.userId,
         dateYYYYMMDD: req.body.dateYYYYMMDD,
@@ -127,20 +126,18 @@ exports.updateByDate = function (req, res, next) {
                     _id: foundData._id,
                     userId: foundData.userId,
                     dateYYYYMMDD: foundData.dateYYYYMMDD,
-                    activityDataItems: foundData.activityDataItems,
+                    activityDataItems: req.body.activityDataItems,
                 });
-                console.log("Updating existing".green)
-                foundData.updateOne(updateData, (err, updatedData)=>{
+                foundData.updateOne(updateData, (err)=>{
                     if (err) {
                         console.log("Error updating existing".yellow)
                         return res.status(500).json({ message: 'Error updating this activityDayData', data: updateData.dateYYYYMMDD });
                     }
-                    if (!updatedData) return res.status(500).json({ message: "Error updating ActivityDayData object", data: updateData.dateYYYYMMDD });
-                    return res.status(200).json({ message: "Successfully update ActivityDayData object", data: updatedData });
+                    // if (!updateAction) return res.status(500).json({ message: "Error updating ActivityDayData object", data: updateData.dateYYYYMMDD });
+                    return res.status(200).json({ message: "Successfully update ActivityDayData object", data: updateData });
                 })
             }
             if (!foundData) {
-                console.log("Creating a new one");
                 newActivityDayData.save((err, savedDayData)=>{
                     if (err) {
                         console.log("Error creating new".yellow)

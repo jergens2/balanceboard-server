@@ -96,41 +96,41 @@ exports.get = function (req, res, next) {
 };
 
 
-exports.getMonth = function (req, res, next) {
-    let startOfMonth = moment(req.params.start).startOf('month').toISOString();
-    let endOfMonth = moment(req.params.start).endOf('month').toISOString();
-    TimelogEntry.find({ 'userId': ObjectId(req.params.userId), 'endTimeISO': { $lt: endOfMonth }, 'startTimeISO': { $gt: startOfMonth } }, (err, timelogEntrys) => {
-        if (err) {
-            return res.status(500).json({
-                message: "DB Error finding TimelogEntrys for month",
-                data: err
-            });
-        } else {
-            if (!timelogEntrys) {
-                return res.status(500).json({ message: "No TimelogEntrys found for month of " + moment(startOfMonth).format('MMMM'), data: req.params.id });
-            } else {
-                let timelogEntryDates = [];
-                let startOfDay = startOfMonth;
-                let endOfDay = moment(startOfDay).endOf('day').toISOString();
-                while (endOfDay <= endOfMonth) {
-                    let thisDaysTimelogEntrys = [];
-                    for (let timelogEntry of timelogEntrys) {
-                        if ((timelogEntry.startTimeISO >= startOfDay) && (timelogEntry.endTimeISO <= endOfDay)) {
-                            thisDaysTimelogEntrys.push(timelogEntry);
-                        }
-                    }
-                    timelogEntryDates.push({
-                        date: moment(startOfDay).format('YYYY-MM-DD'),
-                        timelogEntrys: thisDaysTimelogEntrys.length
-                    })
-                    startOfDay = moment(startOfDay).add(1, 'days').toISOString();
-                    endOfDay = moment(endOfDay).add(1, 'days').toISOString();
-                }
-                return res.status(200).json({ message: "Successfully found TimelogEntrys", data: timelogEntryDates });
-            }
-        }
-    })
-};
+// exports.getMonth = function (req, res, next) {
+//     let startOfMonth = moment(req.params.start).startOf('month').toISOString();
+//     let endOfMonth = moment(req.params.start).endOf('month').toISOString();
+//     TimelogEntry.find({ 'userId': ObjectId(req.params.userId), 'endTimeISO': { $lt: endOfMonth }, 'startTimeISO': { $gt: startOfMonth } }, (err, timelogEntrys) => {
+//         if (err) {
+//             return res.status(500).json({
+//                 message: "DB Error finding TimelogEntrys for month",
+//                 data: err
+//             });
+//         } else {
+//             if (!timelogEntrys) {
+//                 return res.status(500).json({ message: "No TimelogEntrys found for month of " + moment(startOfMonth).format('MMMM'), data: req.params.id });
+//             } else {
+//                 let timelogEntryDates = [];
+//                 let startOfDay = startOfMonth;
+//                 let endOfDay = moment(startOfDay).endOf('day').toISOString();
+//                 while (endOfDay <= endOfMonth) {
+//                     let thisDaysTimelogEntrys = [];
+//                     for (let timelogEntry of timelogEntrys) {
+//                         if ((timelogEntry.startTimeISO >= startOfDay) && (timelogEntry.endTimeISO <= endOfDay)) {
+//                             thisDaysTimelogEntrys.push(timelogEntry);
+//                         }
+//                     }
+//                     timelogEntryDates.push({
+//                         date: moment(startOfDay).format('YYYY-MM-DD'),
+//                         timelogEntrys: thisDaysTimelogEntrys.length
+//                     })
+//                     startOfDay = moment(startOfDay).add(1, 'days').toISOString();
+//                     endOfDay = moment(endOfDay).add(1, 'days').toISOString();
+//                 }
+//                 return res.status(200).json({ message: "Successfully found TimelogEntrys", data: timelogEntryDates });
+//             }
+//         }
+//     })
+// };
 
 exports.getActivityData = function (req, res, next) {
     TimelogEntry.find({ "activities.activityTreeId": req.params.treeId }, (err, timelogEntrys) => {
