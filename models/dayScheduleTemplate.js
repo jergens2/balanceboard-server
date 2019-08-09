@@ -10,9 +10,7 @@ var DayScheduleTemplateSchema = new Schema(
     userId: {type: Schema.Types.ObjectId, ref: 'User', required: true },
     name: {type: String, required: true},
     color: {type: String, required: true},
-    sleepTimeRanges: {type: [], required: true},
-    nonDiscretionaryTimeRanges: {type: [], required: true},
-    discretionaryTimeRanges: {type: [], required: true},
+    delineations: {type: [], required: true},
   }, 
   { 
     collection: 'dayScheduleTemplate' 

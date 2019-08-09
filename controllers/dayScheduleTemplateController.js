@@ -25,15 +25,12 @@ exports.create = function (req, res, next) {
 
     const dayScheduleTemplate = new DayScheduleTemplate({
         userId: req.body.userId,
-
         name: req.body.name,
         color: req.body.color,
-        sleepTimeRanges: req.body.sleepTimeRanges,
-        nonDiscretionaryTimeRanges: req.body.nonDiscretionaryTimeRanges,
-        discretionaryTimeRanges: req.body.discretionaryTimeRanges,
+        delineations: req.body.delineations,
     });
 
-
+    console.log("Thing is: " , dayScheduleTemplate)
     dayScheduleTemplate.save((err) => {
         if (err) {
             return res.status(500).json({ message: 'DB Error creating DayScheduleTemplate object', data: err });
@@ -59,9 +56,7 @@ exports.update = function (req, res, next) {
 
         name: req.body.name,
         color: req.body.color,
-        sleepTimeRanges: req.body.sleepTimeRanges,
-        nonDiscretionaryTimeRanges: req.body.nonDiscretionaryTimeRanges,
-        discretionaryTimeRanges: req.body.discretionaryTimeRanges,
+        delineations: req.body.delineations,
     });
 
 

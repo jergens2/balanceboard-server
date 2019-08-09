@@ -20,6 +20,7 @@ var recurringTaskDefinitionRoutes = require('./routes/recurringTaskDefinition');
 var dailyTaskListRoutes = require('./routes/dailyTaskList');
 var activityDayDataRoutes = require('./routes/activityDayData');
 var socialRoutes = require('./routes/social');
+var daybookDayItemRoutes = require('./routes/daybookDayItem');
 
 
 var config = require('./config.json');
@@ -78,6 +79,7 @@ app.use('/api/recurringTaskDefinition', recurringTaskDefinitionRoutes);
 app.use('/api/daily-task-list', dailyTaskListRoutes);
 app.use('/api/activity-day-data', activityDayDataRoutes);
 app.use('/api/social', socialRoutes);
+app.use('/api/daybook-day-item', daybookDayItemRoutes);
 
 
 app.use('/', function(req, res) {
