@@ -20,9 +20,43 @@ exports.get = function (req, res, next) {
     })
 }
 
+exports.getInRange = function (req, res, next){
+    const startDateYYYYMMDD = req.params.startDateYYYYMMDD;
+    const endDateYYYYMMDD = req.params.endDateYYYYMMDD;
+    DaybookDayItem.find(
+        {
+            'userId': ObjectId(req.params.userId),
+            $or: [
+                {
+                    'dateYYYYMMDD': { $gte: startDateYYYYMMDD },
+                    'dateYYYYMMDD': { $lte: endDateYYYYMMDD }
+                }
+            ]
+        }, (err, timelogEntrys) => {
+            if (err) {
+                return res.status(500).json({
+                    message: "DB Error finding TimelogEntry object",
+                    data: err
+                });
+            }
+            if (!timelogEntrys) {
+                return res.status(500).json({ message: "Could not find TimelogEntrys", data: req.params.id });
+            }
+            let sum = 0;
+            timelogEntrys.forEach((timelogEntry)=>{
+                sum += moment(timelogEntry.endTimeISO).diff(moment(timelogEntry.startTimeISO), "hours");
+            })
+
+
+            return res.status(200).json({ message: "Successfully found TimelogEntrys", data: timelogEntrys });
+        })
+
+}
+
 
 exports.create = function (req, res, next) {
 
+    console.log("Creating daybook day item")
     const daybookDayItem = new DaybookDayItem({
         userId: req.body.userId,
         dateYYYYMMDD: req.body.dateYYYYMMDD,
@@ -35,9 +69,11 @@ exports.create = function (req, res, next) {
         taskItemIds: req.body.taskItemIds,
     });
 
+    console.log("Creating: ", daybookDayItem);
 
     daybookDayItem.save((err) => {
         if (err) {
+            console.log("error:".red);
             return res.status(500).json({ message: 'DB Error creating DaybookDayItem object', data: err });
         } else {
             return res.status(200).json({
