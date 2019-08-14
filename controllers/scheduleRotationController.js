@@ -9,7 +9,7 @@ exports.get = function (req, res, next) {
     ScheduleRotation.find({ 'userId': ObjectId(userId) }, (err, scheduleRotations) => {
         if (err) {
             return res.status(500).json({
-                message: "DB Error finding ScheduleRotation object",
+                message: "DB Error finding scheduleRotations object",
                 data: err
             });
         }
@@ -23,13 +23,12 @@ exports.get = function (req, res, next) {
 
 exports.create = function (req, res, next) {
 
+    console.log("Creating a new Schedule Rotation: ", req.body)
     const scheduleRotation = new ScheduleRotation({
         userId: req.body.userId,
         dayTemplateItems: req.body.dayTemplateItems,
-        startTimeISO: req.body.startTimeISO
+        startDateYYYYMMDD: req.body.startDateYYYYMMDD
     });
-
-
     scheduleRotation.save((err) => {
         if (err) {
             return res.status(500).json({ message: 'DB Error creating ScheduleRotation object', data: err });
@@ -48,6 +47,25 @@ exports.delete = function (req, res, next) {
         return res.status(200).json({ message: "Successfully deleted ScheduleRotation object", data: null });
     });
 };
-exports.save = function (req, res, next) {
 
-};
+
+exports.update = function (req, res, next) {
+    console.log("Updating schedule rotation.  Warning: not implemented")
+
+
+    const updateScheduleRotation = new ScheduleRotation({
+        _id: req.body.id,
+        userId: req.body.userId,
+        dayTemplateItems: req.body.dayTemplateItems,
+        startDateYYYYMMDD: req.body.startDateYYYYMMDD
+    });
+
+
+    ScheduleRotation.findByIdAndUpdate(req.body.id, updateScheduleRotation, { new: true }, (err, scheduleRotation) => {
+
+        if (err) return res.status(500).json({ message: 'DB error updating ScheduleRotation object', data: err });
+        if (!scheduleRotation) return res.status(500).json({ message: "Error updating ScheduleRotation object", data: req.body.id });
+
+        return res.status(200).json({ message: "Successfully update ScheduleRotation object", data: scheduleRotation });
+    });
+}
