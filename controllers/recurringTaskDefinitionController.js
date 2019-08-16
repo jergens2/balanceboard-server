@@ -6,17 +6,19 @@ var moment = require('moment');
 
 exports.get = function (req, res, next) {
     const userId = req.params.userId;
-    RecurringTaskDefinition.find({ 'userId': ObjectId(userId) }, (err, RecurringTaskDefinitions) => {
+    console.log("Finding RTDefinitions by userID", userId);
+    RecurringTaskDefinition.find({ 'userId': ObjectId(userId) }, (err, recurringTaskDefinitions) => {
+        console.log("Bazinga", recurringTaskDefinitions);
         if (err) {
             return res.status(500).json({
                 message: "DB Error finding RecurringTaskDefinition object",
                 data: err
             });
         }
-        if (!RecurringTaskDefinitions) {
+        if (!recurringTaskDefinitions) {
             return res.status(500).json({ message: "Could not find RecurringTaskDefinitions", data: req.params.id });
         }
-        return res.status(200).json({ message: "Successfully found RecurringTaskDefinitions", data: RecurringTaskDefinitions });
+        return res.status(200).json({ message: "Successfully found RecurringTaskDefinitions", data: recurringTaskDefinitions });
     })
 }
 

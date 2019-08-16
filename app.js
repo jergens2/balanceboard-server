@@ -75,7 +75,7 @@ app.use('/api/schedule-rotation', scheduleRotationRoutes);
 app.use('/api/task', taskRoutes);
 app.use('/api/notebook', notebookRoutes);
 app.use('/api/serverScripts', serverScriptsRoutes);
-app.use('/api/recurringTaskDefinition', recurringTaskDefinitionRoutes);
+app.use('/api/recurring-task-definition', recurringTaskDefinitionRoutes);
 app.use('/api/daily-task-list', dailyTaskListRoutes);
 app.use('/api/activity-day-data', activityDayDataRoutes);
 app.use('/api/social', socialRoutes);

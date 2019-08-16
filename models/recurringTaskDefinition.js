@@ -15,7 +15,7 @@ var RecurringTaskDefinitionSchema = new Schema(
     
   }, 
   { 
-    collection: 'recurringTaskDefinition' 
+    collection: 'recurringTaskDefinition_rework' 
   }
 );
 
