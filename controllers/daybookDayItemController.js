@@ -63,13 +63,14 @@ exports.create = function (req, res, next) {
         daybookTimelogEntryDataItems: req.body.daybookTimelogEntryDataItems,
         daybookActivityDataItems: req.body.daybookActivityDataItems,
         dailyTaskListDataItems: req.body.dailyTaskListDataItems,
+        dayStructureDataItems: req.body.dayStructureDataItems,
         dayTemplateId: req.body.dayTemplateId,
         scheduledEventIds: req.body.scheduledEventIds,
         notebookEntryIds: req.body.notebookEntryIds,
         taskItemIds: req.body.taskItemIds,
     });
 
-    console.log("Creating: ", daybookDayItem);
+    console.log("Creating: daybookDayItem for date", daybookDayItem.dateYYYYMMDD);
 
     daybookDayItem.save((err) => {
         if (err) {
@@ -91,7 +92,7 @@ exports.delete = function (req, res, next) {
     });
 };
 exports.update = function (req, res, next) {
-    // console.log("updating daybookDayItem.  incoming request:", req.body );
+    console.log("updating daybookDayItem.  incoming request:", req.body );
 
     const updateDaybookDayItem = new DaybookDayItem({
         _id: req.body._id,
@@ -100,15 +101,17 @@ exports.update = function (req, res, next) {
         daybookTimelogEntryDataItems: req.body.daybookTimelogEntryDataItems,
         daybookActivityDataItems: req.body.daybookActivityDataItems,
         dailyTaskListDataItems: req.body.dailyTaskListDataItems,
+        dayStructureDataItems: req.body.dayStructureDataItems,
         dayTemplateId: req.body.dayTemplateId,
         scheduledEventIds: req.body.scheduledEventIds,
         notebookEntryIds: req.body.notebookEntryIds,
         taskItemIds: req.body.taskItemIds,
     });
 
+    console.log("Updating daybook Day Item: ", updateDaybookDayItem.dateYYYYMMDD);
 
 
-    DaybookDayItem.findByIdAndUpdate(req.body.id, updateDaybookDayItem, { new: true }, (err, daybookDayItem) => {
+    DaybookDayItem.findByIdAndUpdate(req.body._id, updateDaybookDayItem, { new: true }, (err, daybookDayItem) => {
 
         if (err) return res.status(500).json({ message: 'DB error updating DaybookDayItem object', data: err });
         if (!daybookDayItem) return res.status(500).json({ message: "Error updating DaybookDayItem object", data: req.body.id });
