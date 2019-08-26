@@ -64,6 +64,8 @@ exports.create = function (req, res, next) {
         daybookActivityDataItems: req.body.daybookActivityDataItems,
         dailyTaskListDataItems: req.body.dailyTaskListDataItems,
         dayStructureDataItems: req.body.dayStructureDataItems,
+        sleepCycleDataItems: req.body.sleepCycleDataItems,
+        dailyWeightLogEntryKg: req.body.dailyWeightLogEntryKg,
         dayTemplateId: req.body.dayTemplateId,
         scheduledEventIds: req.body.scheduledEventIds,
         notebookEntryIds: req.body.notebookEntryIds,
@@ -85,6 +87,7 @@ exports.create = function (req, res, next) {
         }
     });
 };
+
 exports.delete = function (req, res, next) {
     DaybookDayItem.findByIdAndDelete({ '_id': new ObjectId(req.body.id) }, (err, doc) => {
         if (err) return res.status(500).json({ message: 'DB error deleting DaybookDayItem object', data: null });
@@ -102,6 +105,8 @@ exports.update = function (req, res, next) {
         daybookActivityDataItems: req.body.daybookActivityDataItems,
         dailyTaskListDataItems: req.body.dailyTaskListDataItems,
         dayStructureDataItems: req.body.dayStructureDataItems,
+        sleepCycleDataItems: req.body.sleepCycleDataItems,
+        dailyWeightLogEntryKg: req.body.dailyWeightLogEntryKg,
         dayTemplateId: req.body.dayTemplateId,
         scheduledEventIds: req.body.scheduledEventIds,
         notebookEntryIds: req.body.notebookEntryIds,
