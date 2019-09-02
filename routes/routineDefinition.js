@@ -3,7 +3,7 @@ const router = express.Router();
 
 const verifyAuth = require("../middleware/verifyAuth");
 
-const controller = require('../controllers/recurringTaskDefinitionController');
+const controller = require('../controllers/routineDefinitionController');
 
 
 

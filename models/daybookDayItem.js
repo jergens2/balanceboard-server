@@ -14,7 +14,9 @@ var DaybookDayItemSchema = new Schema(
     dailyTaskListDataItems: { type: [Schema.Types.Mixed], required: true },
     dayStructureDataItems: { type: [Schema.Types.Mixed], required: true },
     sleepCycleDataItems: { type: [Schema.Types.Mixed], required: true },
+    sleepProfile: { type: Schema.Types.Mixed, required: true},
     dailyWeightLogEntryKg: { type: Number, required: true },
+
     // These represent references to data stored in other tables in the database.
     // eventually, convert the types from [String] to [Schema.Types.ObjectId]
     dayTemplateId: { type: String, required: true },

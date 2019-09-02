@@ -5,21 +5,22 @@ var Schema = mongoose.Schema;
 var ActivityCategoryDefinitionSchema = new Schema(
   {
     //_id: Schema.Types.ObjectId,
-    treeId: {type: String, required: true},
-    name: {type: String, required: true},
-    description: String,
-
     userId: {type: Schema.Types.ObjectId, ref: 'User', required: true },
+    treeId: {type: String, required: true},
+    parentTreeId: {type: String, required: true},
 
-    parentTreeId: String,
-    // childrenCategories: [String],
+    name: {type: String, required: true},
+    description: {type: String, required: true},
+    color: {type: String, required: true},
+    icon: {type: String, required: false},
 
-    icon: String,
-    color: String,
-    
+    durationSetting: {type: String, required: true},
+    specifiedDurationMinutes: {type: Number, required: true},
+    targets: {type: [Schema.Types.Mixed], required: true},
+
   }, 
   { 
-    collection: 'activityCategoryDefinition' 
+    collection: 'activityCategoryDefinition_rework' 
   }
 );
 
