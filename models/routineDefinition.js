@@ -9,7 +9,7 @@ var RoutineDefinitionSchema = new Schema(
     userId: {type: Schema.Types.ObjectId, ref: 'User', required: true },
     routineTreeId: {type: String, required: true },
     name: {type: String, required: true },
-    frequency: {type: Schema.Types.Mixed, required: true },
+    frequencies: {type: [Schema.Types.Mixed], required: true },
     timeOfDay: {type: String, required: true },
     timeOfDayRanges: {type: [Schema.Types.Mixed], required: true },
     activityIds: {type: [String], required: true },

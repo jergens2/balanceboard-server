@@ -18,6 +18,10 @@ var ActivityCategoryDefinitionSchema = new Schema(
     specifiedDurationMinutes: {type: Number, required: true},
     targets: {type: [Schema.Types.Mixed], required: true},
 
+    isConfigured: {type: Boolean, required: true},
+    scheduleConfiguration: {type: Schema.Types.Mixed, required: false},
+    isRoutine: {type: Boolean, required: true},
+    routineMembersActivityIds: {type: [Schema.Types.Mixed], required: false},
   }, 
   { 
     collection: 'activityCategoryDefinition_rework' 

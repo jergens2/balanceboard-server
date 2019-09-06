@@ -49,6 +49,11 @@ exports.createDefault = function (req, res, next) {
             durationSetting: activity.durationSetting,
             specifiedDurationMinutes: activity.specifiedDurationMinutes,
             targets: activity.targets,
+
+            isConfigured: activity.isConfigured,
+            scheduleConfiguration: activity.scheduleConfiguration,
+            isRoutine: activity.isRoutine,
+            routineMembersActivityIds: activity.routineMembersActivityIds,
         });
         newDefaultActivities.push(newDefaultActivity);
         userId = activity.userId;
@@ -72,6 +77,11 @@ exports.create = function (req, res, next) {
         durationSetting: req.body.durationSetting,
         specifiedDurationMinutes: req.body.specifiedDurationMinutes,
         targets: req.body.targets,
+
+        isConfigured: req.body.isConfigured,
+        scheduleConfiguration: req.body.scheduleConfiguration,
+        isRoutine: req.body.isRoutine,
+        routineMembersActivityIds: req.body.routineMembersActivityIds,
     });
 
     activityCategoryDefinition.save((err) => {
