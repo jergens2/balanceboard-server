@@ -15,13 +15,18 @@ var ActivityCategoryDefinitionSchema = new Schema(
     icon: {type: String, required: false},
 
     durationSetting: {type: String, required: true},
-    specifiedDurationMinutes: {type: Number, required: true},
-    targets: {type: [Schema.Types.Mixed], required: true},
+    specifiedDurationMinutes: {type: Number, required: false},
+    
 
-    isConfigured: {type: Boolean, required: true},
     scheduleConfiguration: {type: Schema.Types.Mixed, required: false},
+    currentPointsConfiguration: {type: Schema.Types.Mixed, required: false},
+    pointsConfigurationHistory: {type: [Schema.Types.Mixed], required: false},
+
+
     isRoutine: {type: Boolean, required: true},
     routineMembersActivityIds: {type: [Schema.Types.Mixed], required: false},
+
+    isConfigured: {type: Boolean, required: true},
   }, 
   { 
     collection: 'activityCategoryDefinition_rework' 
