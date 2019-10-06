@@ -49,7 +49,7 @@ exports.createDefault = function (req, res, next) {
             durationSetting: activity.durationSetting,
             specifiedDurationMinutes: activity.specifiedDurationMinutes,
             
-            scheduleConfiguration: activity.scheduleConfiguration,
+            scheduleRepititions: activity.scheduleRepititions,
             currentPointsConfiguration: activity.currentPointsConfiguration,
             pointsConfigurationHistory: activity.pointsConfigurationHistory,
         
@@ -80,7 +80,7 @@ exports.create = function (req, res, next) {
         durationSetting: req.body.durationSetting,
         specifiedDurationMinutes: req.body.specifiedDurationMinutes,
         
-        scheduleConfiguration: req.body.scheduleConfiguration,
+        scheduleRepititions: req.body.scheduleRepititions,
         currentPointsConfiguration: req.body.currentPointsConfiguration,
         pointsConfigurationHistory: req.body.pointsConfigurationHistory,
     

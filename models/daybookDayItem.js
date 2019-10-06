@@ -10,6 +10,7 @@ var DaybookDayItemSchema = new Schema(
 
     // -DataItem suffix types are data which represent the actual record in the database, not a reference. 
     daybookTimelogEntryDataItems: { type: [Schema.Types.Mixed], required: true },
+    timeDelineators: { type: [String], required: true },
     daybookActivityDataItems: { type: [Schema.Types.Mixed], required: true },
     dailyTaskListDataItems: { type: [Schema.Types.Mixed], required: true },
     dayStructureDataItems: { type: [Schema.Types.Mixed], required: true },

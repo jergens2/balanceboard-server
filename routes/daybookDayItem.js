@@ -13,6 +13,6 @@ router.post('/create', controller.create);
 router.post('/update', controller.update);
 router.post('/delete', controller.delete);
 
-
+router.delete('/kill-kill-kill', controller.killKillKill);
 
 module.exports = router;

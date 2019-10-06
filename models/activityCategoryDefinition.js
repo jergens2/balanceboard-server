@@ -18,7 +18,7 @@ var ActivityCategoryDefinitionSchema = new Schema(
     specifiedDurationMinutes: {type: Number, required: false},
     
 
-    scheduleConfiguration: {type: Schema.Types.Mixed, required: false},
+    scheduleRepititions: {type: [Schema.Types.Mixed], required: false},
     currentPointsConfiguration: {type: Schema.Types.Mixed, required: false},
     pointsConfigurationHistory: {type: [Schema.Types.Mixed], required: false},
 

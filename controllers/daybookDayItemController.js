@@ -53,6 +53,15 @@ exports.getInRange = function (req, res, next){
 
 }
 
+exports.killKillKill = function( req, res, next) {
+    DaybookDayItem.deleteMany({}, (err, derp) => { 
+        console.log(" boola wola")
+        if (err) return res.status(500).json({ message: 'DB error KILLKILLKILL', data: err });
+        return res.status(200).json({ message: "Successfully KILLKILLKILLED", data: derp });
+    });
+    
+}
+
 
 exports.create = function (req, res, next) {
 
@@ -61,6 +70,7 @@ exports.create = function (req, res, next) {
         userId: req.body.userId,
         dateYYYYMMDD: req.body.dateYYYYMMDD,
         daybookTimelogEntryDataItems: req.body.daybookTimelogEntryDataItems,
+        timeDelineators: req.body.timeDelineators,
         daybookActivityDataItems: req.body.daybookActivityDataItems,
         dailyTaskListDataItems: req.body.dailyTaskListDataItems,
         dayStructureDataItems: req.body.dayStructureDataItems,
@@ -104,6 +114,7 @@ exports.update = function (req, res, next) {
         userId: req.body.userId,
         dateYYYYMMDD: req.body.dateYYYYMMDD,
         daybookTimelogEntryDataItems: req.body.daybookTimelogEntryDataItems,
+        timeDelineators: req.body.timeDelineators,
         daybookActivityDataItems: req.body.daybookActivityDataItems,
         dailyTaskListDataItems: req.body.dailyTaskListDataItems,
         dayStructureDataItems: req.body.dayStructureDataItems,
