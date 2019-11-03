@@ -22,7 +22,7 @@ var DaybookDayItemSchema = new Schema(
     
     // These represent references to data stored in other tables in the database.
     // eventually, convert the types from [String] to [Schema.Types.ObjectId]
-    dayTemplateId: { type: String, required: true },
+    dayTemplateId: { type: String, required: false },
     scheduledEventIds: { type: [String], required: true },
     notebookEntryIds: { type: [String], required: true },
     taskItemIds: { type: [String], required: true },

@@ -45,6 +45,10 @@ exports.createDefault = function (req, res, next) {
             icon: activity.icon,
             color: activity.color,
             description: activity.description,
+
+            isSleepActivity: activity.isSleepActivity,
+            isRootLevel: activity.isRootLevel,
+            canDelete: activity.canDelete,
     
             durationSetting: activity.durationSetting,
             specifiedDurationMinutes: activity.specifiedDurationMinutes,
@@ -76,6 +80,11 @@ exports.create = function (req, res, next) {
         icon: req.body.icon,
         color: req.body.color,
         description: req.body.description,
+
+        isSleepActivity: req.body.isSleepActivity,
+        isRootLevel: req.body.isRootLevel,
+        canDelete: req.body.canDelete,
+    
 
         durationSetting: req.body.durationSetting,
         specifiedDurationMinutes: req.body.specifiedDurationMinutes,

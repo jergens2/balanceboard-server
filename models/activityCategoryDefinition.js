@@ -14,6 +14,10 @@ var ActivityCategoryDefinitionSchema = new Schema(
     color: {type: String, required: true},
     icon: {type: String, required: false},
 
+    isSleepActivity: {type: Boolean, required: true},
+    isRootLevel: {type: Boolean, required: true},
+    canDelete: {type: Boolean, required: true},
+
     durationSetting: {type: String, required: true},
     specifiedDurationMinutes: {type: Number, required: false},
     
@@ -29,9 +33,12 @@ var ActivityCategoryDefinitionSchema = new Schema(
     isConfigured: {type: Boolean, required: true},
   }, 
   { 
-    collection: 'activityCategoryDefinition_rework' 
+    collection: 'activityCategoryDefinition' 
   }
 );
 
 //Export model
 module.exports = mongoose.model('ActivityCategoryDefinition', ActivityCategoryDefinitionSchema);
+
+
+
