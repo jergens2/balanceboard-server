@@ -23,43 +23,28 @@ exports.get = function (req, res, next) {
 exports.getInRange = function (req, res, next){
     const startDateYYYYMMDD = req.params.startDateYYYYMMDD;
     const endDateYYYYMMDD = req.params.endDateYYYYMMDD;
+    // console.log("StartDate: " + startDateYYYYMMDD + " - TO - END DATE:  " + endDateYYYYMMDD)
     DaybookDayItem.find(
         {
             'userId': ObjectId(req.params.userId),
-            $or: [
-                {
-                    'dateYYYYMMDD': { $gte: startDateYYYYMMDD },
-                    'dateYYYYMMDD': { $lte: endDateYYYYMMDD }
-                }
-            ]
-        }, (err, timelogEntrys) => {
+            'dateYYYYMMDD': {
+                $gte: startDateYYYYMMDD,
+                $lte: endDateYYYYMMDD,
+            },            
+        }, (err, daybookDayItems) => {
             if (err) {
                 return res.status(500).json({
-                    message: "DB Error finding TimelogEntry object",
+                    message: "DB Error finding DaybookDayItem object",
                     data: err
                 });
             }
-            if (!timelogEntrys) {
-                return res.status(500).json({ message: "Could not find TimelogEntrys", data: req.params.id });
+            if (!daybookDayItems) {
+                return res.status(500).json({ message: "Could not find DaybookDayItems", data: req.params.id });
             }
-            let sum = 0;
-            timelogEntrys.forEach((timelogEntry)=>{
-                sum += moment(timelogEntry.endTimeISO).diff(moment(timelogEntry.startTimeISO), "hours");
-            })
 
-
-            return res.status(200).json({ message: "Successfully found TimelogEntrys", data: timelogEntrys });
+            return res.status(200).json({ message: "Successfully found DaybookDayItems", data: daybookDayItems });
         })
 
-}
-
-exports.killKillKill = function( req, res, next) {
-    DaybookDayItem.deleteMany({}, (err, derp) => { 
-        console.log(" boola wola")
-        if (err) return res.status(500).json({ message: 'DB error KILLKILLKILL', data: err });
-        return res.status(200).json({ message: "Successfully KILLKILLKILLED", data: derp });
-    });
-    
 }
 
 
