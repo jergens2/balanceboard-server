@@ -11,12 +11,16 @@ var DaybookDayItemSchema = new Schema(
     // -DataItem suffix types are data which represent the actual record in the database, not a reference. 
     daybookTimelogEntryDataItems: { type: [Schema.Types.Mixed], required: true },
     timeDelineators: { type: [String], required: true },
+
+    sleepTimes: { type: [Schema.Types.Mixed], required: true },
+    sleepEnergyLevelInputs: { type: [Schema.Types.Mixed], required: true },
+
     daybookActivityDataItems: { type: [Schema.Types.Mixed], required: true },
     dailyTaskListDataItems: { type: [Schema.Types.Mixed], required: true },
     dayStructureDataItems: { type: [Schema.Types.Mixed], required: true },
+
     scheduledActivityItems: { type: [Schema.Types.Mixed], required: true },
-    sleepCycleDataItems: { type: [Schema.Types.Mixed], required: true },
-    sleepProfile: { type: Schema.Types.Mixed, required: true},
+    
     dailyWeightLogEntryKg: { type: Number, required: true },
 
     
@@ -28,7 +32,7 @@ var DaybookDayItemSchema = new Schema(
     taskItemIds: { type: [String], required: true },
   }, 
   { 
-    collection: 'daybookDayItem' 
+    collection: 'daybookDayItem_2' 
   }
 );
 

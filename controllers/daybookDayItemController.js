@@ -20,7 +20,7 @@ exports.get = function (req, res, next) {
     });
 }
 
-exports.getInRange = function (req, res, next){
+exports.getInRange = function (req, res, next) {
     const startDateYYYYMMDD = req.params.startDateYYYYMMDD;
     const endDateYYYYMMDD = req.params.endDateYYYYMMDD;
     // console.log("StartDate: " + startDateYYYYMMDD + " - TO - END DATE:  " + endDateYYYYMMDD)
@@ -30,7 +30,7 @@ exports.getInRange = function (req, res, next){
             'dateYYYYMMDD': {
                 $gte: startDateYYYYMMDD,
                 $lte: endDateYYYYMMDD,
-            },            
+            },
         }, (err, daybookDayItems) => {
             if (err) {
                 return res.status(500).json({
@@ -50,17 +50,22 @@ exports.getInRange = function (req, res, next){
 
 exports.create = function (req, res, next) {
 
+    const dateYYYYMMDD = req.body.dateYYYYMMDD;
     // console.log("Creating daybook day item")
-    const daybookDayItem = new DaybookDayItem({
+    const saveNewItem = new DaybookDayItem({
         userId: req.body.userId,
-        dateYYYYMMDD: req.body.dateYYYYMMDD,
+        dateYYYYMMDD: dateYYYYMMDD,
+
         daybookTimelogEntryDataItems: req.body.daybookTimelogEntryDataItems,
         timeDelineators: req.body.timeDelineators,
+
+        sleepTimes: req.body.sleepTimes,
+        sleepEnergyLevelInputs: req.body.sleepEnergyLevelInputs,
+
         daybookActivityDataItems: req.body.daybookActivityDataItems,
         dailyTaskListDataItems: req.body.dailyTaskListDataItems,
         dayStructureDataItems: req.body.dayStructureDataItems,
-        sleepCycleDataItems: req.body.sleepCycleDataItems,
-        sleepProfile:  req.body.sleepProfile,
+
         dailyWeightLogEntryKg: req.body.dailyWeightLogEntryKg,
         scheduledActivityItems: req.body.scheduledActivityItems,
         dayTemplateId: req.body.dayTemplateId,
@@ -69,18 +74,33 @@ exports.create = function (req, res, next) {
         taskItemIds: req.body.taskItemIds,
     });
 
-    console.log("Creating: daybookDayItem for date", daybookDayItem.dateYYYYMMDD);
+    console.log("Creating: daybookDayItem for date", dateYYYYMMDD);
 
-    daybookDayItem.save((err) => {
+    DaybookDayItem.findOne({
+        'userId': ObjectId(req.params.userId),
+        'dateYYYYMMDD': dateYYYYMMDD,
+    }, (err, existingItem) => {
         if (err) {
-            console.log("error:".red);
-            return res.status(500).json({ message: 'DB Error creating DaybookDayItem object', data: err });
-        } else {
-            return res.status(200).json({
-                message: 'DaybookDayItem object saved',
-                data: daybookDayItem
+            return res.status(500).json({
+                message: "DB Error finding DaybookDayItem object.  Did not create new items either.",
+                data: err
             });
+        }
+        if (existingItem) {
+            return res.status(200).json({ message: "Found existing item by date", data: existingItem });
+        } else {
+            saveNewItem.save((err) => {
+                if (err) {
+                    console.log('Error saving new DaybookDayItem.')
+                    return res.status(500).json({ message: 'DB Error creating DaybookDayItem object', data: err });
+                } else {
+                    return res.status(200).json({
+                        message: 'DaybookDayItem object saved',
+                        data: saveNewItem
+                    });
 
+                }
+            });
         }
     });
 };
@@ -98,13 +118,17 @@ exports.update = function (req, res, next) {
         _id: req.body._id,
         userId: req.body.userId,
         dateYYYYMMDD: req.body.dateYYYYMMDD,
+
         daybookTimelogEntryDataItems: req.body.daybookTimelogEntryDataItems,
         timeDelineators: req.body.timeDelineators,
+
+        sleepTimes: req.body.sleepTimes,
+        sleepEnergyLevelInputs: req.body.sleepEnergyLevelInputs,
+
         daybookActivityDataItems: req.body.daybookActivityDataItems,
         dailyTaskListDataItems: req.body.dailyTaskListDataItems,
         dayStructureDataItems: req.body.dayStructureDataItems,
-        sleepCycleDataItems: req.body.sleepCycleDataItems,
-        sleepProfile:  req.body.sleepProfile,
+
         dailyWeightLogEntryKg: req.body.dailyWeightLogEntryKg,
         scheduledActivityItems: req.body.scheduledActivityItems,
         dayTemplateId: req.body.dayTemplateId,
@@ -113,7 +137,7 @@ exports.update = function (req, res, next) {
         taskItemIds: req.body.taskItemIds,
     });
 
-    // console.log("Updating daybook Day Item: ", updateDaybookDayItem.dateYYYYMMDD);
+    console.log("Updating daybook Day Item: ", updateDaybookDayItem);
 
 
     DaybookDayItem.findByIdAndUpdate(req.body._id, updateDaybookDayItem, { new: true }, (err, daybookDayItem) => {
