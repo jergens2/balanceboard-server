@@ -59,7 +59,7 @@ exports.create = function (req, res, next) {
         daybookTimelogEntryDataItems: req.body.daybookTimelogEntryDataItems,
         timeDelineators: req.body.timeDelineators,
 
-        sleepTimes: req.body.sleepTimes,
+        sleepInputItems: req.body.sleepInputItems,
         sleepEnergyLevelInputs: req.body.sleepEnergyLevelInputs,
 
         daybookActivityDataItems: req.body.daybookActivityDataItems,
@@ -112,17 +112,22 @@ exports.delete = function (req, res, next) {
     });
 };
 exports.update = function (req, res, next) {
-    // console.log("updating daybookDayItem.  incoming request:", req.body );
-    console.log("updating daybookDayItem for date", req.body.dateYYYYMMDD);
+    var timeDelineators = [];
+    const requestDelineators = req.body.timeDelineators;
+    for(let i=0; i<requestDelineators.length; i++){
+        if(timeDelineators.indexOf(requestDelineators[i]) === -1){
+            timeDelineators.push(requestDelineators[i]);
+        }
+    }
     const updateDaybookDayItem = new DaybookDayItem({
         _id: req.body._id,
         userId: req.body.userId,
         dateYYYYMMDD: req.body.dateYYYYMMDD,
 
         daybookTimelogEntryDataItems: req.body.daybookTimelogEntryDataItems,
-        timeDelineators: req.body.timeDelineators,
+        timeDelineators: timeDelineators,
 
-        sleepTimes: req.body.sleepTimes,
+        sleepInputItems: req.body.sleepInputItems,
         sleepEnergyLevelInputs: req.body.sleepEnergyLevelInputs,
 
         daybookActivityDataItems: req.body.daybookActivityDataItems,
