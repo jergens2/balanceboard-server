@@ -59,7 +59,7 @@ exports.create = function (req, res, next) {
         daybookTimelogEntryDataItems: req.body.daybookTimelogEntryDataItems,
         timeDelineators: req.body.timeDelineators,
 
-        sleepInputItems: req.body.sleepInputItems,
+        sleepInputItem: req.body.sleepInputItem,
         sleepEnergyLevelInputs: req.body.sleepEnergyLevelInputs,
 
         daybookActivityDataItems: req.body.daybookActivityDataItems,
@@ -127,7 +127,7 @@ exports.update = function (req, res, next) {
         daybookTimelogEntryDataItems: req.body.daybookTimelogEntryDataItems,
         timeDelineators: timeDelineators,
 
-        sleepInputItems: req.body.sleepInputItems,
+        sleepInputItem: req.body.sleepInputItem,
         sleepEnergyLevelInputs: req.body.sleepEnergyLevelInputs,
 
         daybookActivityDataItems: req.body.daybookActivityDataItems,

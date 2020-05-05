@@ -1,9 +1,9 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const UserAccount = require('../models/userAccount');
+const fs = require("fs");
 
-// 2018-06-29:  this secret is temporary until better key management is implemented
-const secret = "1D78454C81ED9CB8E1348851F25DFE11BE0DCA6C277C5AC1CAB58B7B196B81C30F87F047F25871DAC35BA5ACA760EFF07F58A438FC2CDC1956EBC265E1";
+const RSA_PRIVATE_KEY = fs.readFileSync('key/private_key.key');
 
 exports.register = function (req, res, next) {
     bcrypt.hash(req.body.password, 10)
@@ -31,15 +31,16 @@ exports.register = function (req, res, next) {
         })
 };
 
-exports.authenticate = function (req, res, next) {
-
+exports.attemptLogin = function (req, res, next) {
+    // console.log("Key: ", RSA_PRIVATE_KEY.toString(), RSA_PRIVATE_KEY.toJSON())
+    // console.log("Login attempt: " , req.body)
     let foundUser = null;
-    UserAccount.findOne({ 'email': req.body.userAccount.email.toLowerCase()})
+    UserAccount.findOne({ 'username': req.body.userAccount.username.toLowerCase()})
         .then((userAccount)=>{
             
             if(!userAccount){
-                return res.status(401).json({
-                    message: "Authorization failed.  Could not find an account with email '" + req.body.userAccount.email + "'"
+                res.status(401).json({
+                    message: "Authorization failed.  Could not find an account with username '" + req.body.userAccount.username + "'"
                 })
             }
             foundUser = userAccount;
@@ -47,31 +48,36 @@ exports.authenticate = function (req, res, next) {
         })
         .then((result) => {
             if(!result){
-                return res.status(401).json({
+                res.status(401).json({
                     message: "Authentication failed.  Bad password."
                 })
             }
             const token = jwt.sign(
                 {
                     email: foundUser.email, 
+                    username: foundUser.username,
                     userId: foundUser._id
                 },
-                secret,
+                RSA_PRIVATE_KEY,
                 {
-                    expiresIn: "1h"
+                    expiresIn: 1200,
                 }
             );
             res.status(200).json({
                 message: "Authentication successful.",
                 data: {
-                    "userAccount": foundUser,
+                    "userAccount": {
+                        id: foundUser._id,
+                        username: foundUser.username,
+                        email: foundUser.email,
+                    },
                     "token": token                
                 }
             })
 
          })
          .catch((err) => {
-             return res.status(401).json({
+             res.status(401).json({
                  message: "Error.  Authentication failed."
              })
          })
@@ -101,7 +107,14 @@ exports.getUserById = function (req, res, next){
             if(!userAccount){
                 return res.status(500).json({message:"Could not find userAccount.", data: req.params.id})
             }
-            return res.status(200).json({message: "Found userAccount by localStorage ID", data: userAccount})
+            return res.status(200).json(
+                {
+                    message: "Found userAccount by ID", data: {
+                        id: userAccount._id,
+                        username: userAccount.username,
+                        email: userAccount.email,
+                    }
+                })
         }
     );
 };
