@@ -2,8 +2,10 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const UserAccount = require('../models/userAccount');
 const fs = require("fs");
+const crypto = require("crypto");
 
 const RSA_PRIVATE_KEY = fs.readFileSync('key/private_key.key');
+const passphrase = fs.readFileSync('key/passphrase.txt');
 
 exports.register = function (req, res, next) {
     bcrypt.hash(req.body.password, 10)
@@ -52,31 +54,40 @@ exports.attemptLogin = function (req, res, next) {
                     message: "Authentication failed.  Bad password."
                 })
             }
+
             const token = jwt.sign(
                 {
                     email: foundUser.email, 
                     username: foundUser.username,
                     userId: foundUser._id
                 },
-                RSA_PRIVATE_KEY,
+                { 
+                    key: RSA_PRIVATE_KEY, 
+                    passphrase: passphrase
+                } ,
                 {
-                    expiresIn: 1200,
-                }
+                    algorithm: 'RS256',
+                    expiresIn: 120,
+                   
+                },
             );
+            console.log("")
             res.status(200).json({
                 message: "Authentication successful.",
                 data: {
-                    "userAccount": {
+                    userAccount: {
                         id: foundUser._id,
                         username: foundUser.username,
                         email: foundUser.email,
                     },
-                    "token": token                
+                    token: token,
+                    expiresIn: 120,
                 }
             })
 
          })
          .catch((err) => {
+             console.log("Error".red, err)
              res.status(401).json({
                  message: "Error.  Authentication failed."
              })

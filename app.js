@@ -1,17 +1,16 @@
-var express = require('express');
-var path = require('path');
-var favicon = require('serve-favicon');
-var logger = require('morgan');
-var cookieParser = require('cookie-parser');
-var bodyParser = require('body-parser');
-var mongoose = require('mongoose');
+const express = require('express');
+const path = require('path');
+const favicon = require('serve-favicon');
+const logger = require('morgan');
+const cookieParser = require('cookie-parser');
+const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
+const expressJwt = require('express-jwt');
+const fs = require("fs");
 
 var authenticationRoutes = require('./routes/authentication');
 var userRoutes = require('./routes/userPreferences');
-var genericDataRoutes = require('./routes/genericData');
-var timelogEntryRoutes = require('./routes/timelogEntry');
 var activityCategoryDefinitionRoutes = require('./routes/activityCategoryDefinition');
-var activityCategoryDefinitionRoutesOld = require('./routes/activityCategoryDefinitionOld');
 var scheduleDayTemplateRoutes = require('./routes/scheduleDayTemplate');
 var scheduleRotationRoutes = require('./routes/scheduleRotation');
 var taskRoutes = require('./routes/task');
@@ -24,9 +23,11 @@ var socialRoutes = require('./routes/social');
 var daybookDayItemRoutes = require('./routes/daybookDayItem');
 
 
-var config = require('./config.json');
-
-var mongoDB = 'mongodb://'+config.database.user+':'+config.database.password+'@'+config.database.host;
+const config = require('./config.json');
+const dbUser = config.database.user;
+const dbPass = config.database.password;
+const dbHost = config.database.host;
+const mongoDB = 'mongodb://'+dbUser+':'+dbPass+'@'+dbHost;
 mongoose.connect(mongoDB);
 // Get Mongoose to use the global promise library
 mongoose.Promise = global.Promise;
@@ -44,7 +45,7 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 
 // uncomment after placing your favicon in /public
-//app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+app.use(favicon('favicon.ico'));
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -66,22 +67,30 @@ app.use(function (req, res, next) {
   next();
 });
 
+
+
+
 app.use('/api/authentication', authenticationRoutes);
-app.use('/api/user', userRoutes );
-app.use('/api/genericData', genericDataRoutes);
-app.use('/api/timelogEntry', timelogEntryRoutes);
-app.use('/api/activity-category-definition', activityCategoryDefinitionRoutes);
+
+const RSA_PUBLIC_KEY = fs.readFileSync('./key/public_key.key');
+const checkIfAuthenticated = expressJwt({
+  secret: RSA_PUBLIC_KEY,
+});
+
+
+app.use('/api/user', checkIfAuthenticated, userRoutes );
+app.use('/api/activity-category-definition', checkIfAuthenticated, activityCategoryDefinitionRoutes);
 // app.use('/api/activity-category-definition-old', activityCategoryDefinitionRoutesOld);
-app.use('/api/schedule-day-template', scheduleDayTemplateRoutes);
-app.use('/api/schedule-rotation', scheduleRotationRoutes);
-app.use('/api/task', taskRoutes);
-app.use('/api/notebook', notebookRoutes);
-app.use('/api/serverScripts', serverScriptsRoutes);
-app.use('/api/routine-definition', routineDefinitionRoutes);
-app.use('/api/daily-task-list', dailyTaskListRoutes);
-app.use('/api/activity-day-data', activityDayDataRoutes);
-app.use('/api/social', socialRoutes);
-app.use('/api/daybook-day-item', daybookDayItemRoutes);
+app.use('/api/schedule-day-template', checkIfAuthenticated, scheduleDayTemplateRoutes);
+app.use('/api/schedule-rotation', checkIfAuthenticated, scheduleRotationRoutes);
+app.use('/api/task', checkIfAuthenticated, taskRoutes);
+app.use('/api/notebook', checkIfAuthenticated, notebookRoutes);
+app.use('/api/serverScripts', checkIfAuthenticated, serverScriptsRoutes);
+app.use('/api/routine-definition', checkIfAuthenticated, routineDefinitionRoutes);
+app.use('/api/daily-task-list', checkIfAuthenticated, dailyTaskListRoutes);
+app.use('/api/activity-day-data', checkIfAuthenticated, activityDayDataRoutes);
+app.use('/api/social', checkIfAuthenticated, socialRoutes);
+app.use('/api/daybook-day-item', checkIfAuthenticated, daybookDayItemRoutes);
 
 
 app.use('/', function(req, res) {
