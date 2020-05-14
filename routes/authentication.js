@@ -7,8 +7,9 @@ const authenticationController = require('../controllers/authenticationControlle
 //router.get('/:id', authenticationController.event_detail);
 
 router.post('/authenticate', authenticationController.attemptLogin);
-router.post('/register', authenticationController.register);
-router.get('/validateNewEmail/:email', authenticationController.validateNewEmail);
+router.post('/register', authenticationController.startRegistration);
+router.post('/finalize-registration', authenticationController.finalizeRegistration)
+router.get('/check-for-existing/:email/:username', authenticationController.checkForExisting);
 router.get('/getUserById/:id', authenticationController.getUserById);
 
 
