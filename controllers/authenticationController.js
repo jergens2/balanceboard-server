@@ -64,14 +64,21 @@ exports.startRegistration = function (req, res, next) {
         }
     });
 
-
-    let send = transporter.sendMail({
+    const message = {
         from: '"Balanceboard Registration" <registration@balanceboardapp.com>', // sender address
         to: email, // list of receivers
         subject: subjectLine, // Subject line
         text: textBody, // plain text body
-        html: htmlBody // html body
-    }, (err, info) => {
+        html: htmlBody, // html body
+        // dsn: {
+        //     id: uuid.v4(),
+        //     return: 'full',
+        //     notify: ['success', 'failure', 'delay'],
+        //     recipient: 'registration@balanceboardapp.com'
+        // }
+    }
+
+    let send = transporter.sendMail(message, (err, info) => {
         if (err) {
             console.log("Err!, ".red, err)
             return res.status(500).json({
@@ -99,34 +106,32 @@ exports.startRegistration = function (req, res, next) {
                                     })
                                 })
                                 .catch(err => {
-                                    res.status(500).json(err);
+                                    res.status(500).json({ mesage: "Issue saving user account document", data: err });
                                 })
                         })
-
+                        .catch(err => {
+                            res.status(500).json({ mesage: "Issue after hasing PIN", data: err });
+                        });
                 })
                 .catch(err => {
-                    res.status(500).json(err);
+                    res.status(500).json({ mesage: "Issue after hashing password", data: err });
                 });
         }
-
     })
-
-
-
 };
 
 exports.finalizeRegistration = function (req, res, next) {
     const code = req.body.code;
     const email = req.body.email;
-    console.log("Searching for thing by email: " , req.body)
-    if(code){
-        UserAccount.findOne({ 'email': email }, (err, foundAccount)=>{
-            if(err){
-                return res.status(500).json({message: 'Error finding user account ', err});
-            }else{
-                if(foundAccount){
+    console.log("Searching for thing by email: ", req.body)
+    if (code) {
+        UserAccount.findOne({ 'email': email }, (err, foundAccount) => {
+            if (err) {
+                return res.status(500).json({ message: 'Error finding user account ', err });
+            } else {
+                if (foundAccount) {
                     console.log("Found account: " + foundAccount.registrationCode, foundAccount)
-                    if(foundAccount.registrationCode === code){
+                    if (foundAccount.registrationCode === code) {
                         const currentTime = moment().toISOString();
                         const newAccount = new UserAccount({
                             email: email,
@@ -138,32 +143,133 @@ exports.finalizeRegistration = function (req, res, next) {
                             registeredAt: currentTime,
                             _id: foundAccount._id,
                         });
-                        UserAccount.findByIdAndUpdate(foundAccount._id, newAccount, (err, updatedAccount)=>{
-                            if(err){
-                                return res.status(500).json({message: 'Error finding user account ', err});
-                            }else{
-                                return res.status(200).json({message: 'Successfully matched the registration codes!  Account is registered.', data: currentTime});
+                        UserAccount.findByIdAndUpdate(foundAccount._id, newAccount, (err, updatedAccount) => {
+                            if (err) {
+                                return res.status(500).json({ message: 'Error finding user account ', err });
+                            } else {
+                                return res.status(200).json({ message: 'Successfully matched the registration codes!  Account is registered.', currentTime: currentTime, codeMatch: true });
                             }
                         })
-                    }else{
-                        console.log("Error with codes.  existing code vs received code: " , foundAccount.registrationCode, code)
-                        return res.status(500).json("Error matching registration codes.");
+                    } else {
+                        return res.status(200).json({ message: 'Failed to match codes', currentTime: '', codeMatch: false });
                     }
-                }else{
-                    console.log("Error with something: " , foundAccount);
-                    return res.status(500).json({message: 'Error finding user account ', err});
+                } else {
+                    console.log("Error with something: ", foundAccount);
+                    return res.status(500).json({ message: 'Error finding user account ', err });
                 }
             }
         })
-    }else{
+    } else {
         return res.status(500).json("Error with provided code");
     }
+}
+exports.resendCode = function (req, res, next) {
+    const email = req.body.email.toLowerCase();
+    const subjectLine = 'balanceboard.app Account Registration';
+
+    const code = generateEmailCode();
+    var textBody = "Your registration code is:  \n" + code;
+    var htmlBody = "Your registration code is:  <br><span style='font-size:2em'>" + code + "</span>";
+
+    const transporter = nodemailer.createTransport({
+        host: "box.balanceboardapp.com",
+        port: 587,
+        secure: false, // true for 465, false for other ports
+        auth: {
+            user: 'registration@balanceboardapp.com',
+            pass: registration_password,
+        }
+    });
+
+    const message = {
+        from: '"Balanceboard Registration" <registration@balanceboardapp.com>', // sender address
+        to: email, // list of receivers
+        subject: subjectLine, // Subject line
+        text: textBody, // plain text body
+        html: htmlBody, // html body
+        // dsn: {
+        //     id: uuid.v4(),
+        //     return: 'full',
+        //     notify: ['success', 'failure', 'delay'],
+        //     recipient: 'registration@balanceboardapp.com'
+        // }
+    }
+
+    let send = transporter.sendMail(message, (err, info) => {
+        if (err) {
+            console.log("Err!, ".red, err)
+            return res.status(500).json({
+                message: "Error sending email",
+                data: err
+            });
+        } else {
+            UserAccount.findOne({ 'email': email }, (err, existingAccount) => {
+                if (err) {
+                    res.status(500).json({
+                        message: "Error finding account",
+                        data: err
+                    });
+                } else {
+                    if (existingAccount) {
+                        const existingId = existingAccount._id
+                        const newAccount = new UserAccount({
+                            email: email,
+                            username: existingAccount.username,
+                            usernameStylized: existingAccount.usernameStylized,
+                            password: existingAccount.hashedPassword,
+                            pin: existingAccount.hashedPin,
+                            registrationCode: code,
+                            registeredAt: '',
+                            _id: existingId,
+                        });
+                        UserAccount.findByIdAndUpdate(existingId, newAccount, { new: true }, (err, updatedAccount) => {
+                            if (err) {
+                                res.status(500).json({
+                                    message: "Error updating account code",
+                                    data: err
+                                });
+                            } else {
+                                if (updatedAccount) {
+                                    res.status(200).json({
+                                        message: "Successfully updated code",
+                                        data: email,
+                                    });
+                                } else {
+                                    res.status(500).json({
+                                        message: "Error updating account code",
+                                        data: err
+                                    });
+                                }
+                            }
+                        })
+                    } else {
+                        res.status(500).json({
+                            message: "Error, no existing account",
+                            data: err
+                        });
+                    }
+                }
+            })
+        }
+    })
 }
 
 exports.attemptLogin = function (req, res, next) {
     // console.log("Key: ", RSA_PRIVATE_KEY.toString(), RSA_PRIVATE_KEY.toJSON())
     // console.log("Login attempt: " , req.body)
     let foundUser = null;
+
+
+
+
+
+
+        // to do: finish this.  email or username ability
+
+
+
+
+
     UserAccount.findOne({ 'username': req.body.userAccount.username.toLowerCase() })
         .then((userAccount) => {
 
@@ -256,6 +362,7 @@ exports.checkForExisting = function (req, res, next) {
                         message: 'Success: account does not exist',
                         usernameIsUnique: true,
                         emailIsUnique: true,
+                        code: '',
                     });
                 } else {
                     let usernameIsUnique = true;
@@ -270,6 +377,7 @@ exports.checkForExisting = function (req, res, next) {
                         message: 'Credential already exists',
                         usernameIsUnique: usernameIsUnique,
                         emailIsUnique: emailIsUnique,
+                        code: account.registrationCode,
                     });
                 }
             });
