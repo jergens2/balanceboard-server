@@ -97,6 +97,7 @@ exports.startRegistration = function (req, res, next) {
                                 password: hashedPassword,
                                 pin: hashedPin,
                                 registrationCode: code,
+                                registeredAt: "",
                             });
                             userAccount.save()
                                 .then(result => {
@@ -125,7 +126,7 @@ exports.finalizeRegistration = function (req, res, next) {
     const email = req.body.email;
     console.log("Searching for thing by email: ", req.body)
     if (code) {
-        UserAccount.findOne({ 'email': email }, (err, foundAccount) => {
+        UserAccount.findOne({ 'email': email, "registeredAt": "" }, (err, foundAccount) => {
             if (err) {
                 return res.status(500).json({ message: 'Error finding user account ', err });
             } else {
@@ -255,24 +256,19 @@ exports.resendCode = function (req, res, next) {
 }
 
 exports.attemptLogin = function (req, res, next) {
-    // console.log("Key: ", RSA_PRIVATE_KEY.toString(), RSA_PRIVATE_KEY.toJSON())
-    // console.log("Login attempt: " , req.body)
-    let foundUser = null;
-
-
-
-
-
-
-        // to do: finish this.  email or username ability
-
-
-
-
-
-    UserAccount.findOne({ 'username': req.body.userAccount.username.toLowerCase() })
+    var foundUser = null;
+    const email = req.body.email.toLowerCase();
+    const username = req.body.username.toLowerCase();
+    const password = req.body.password;
+    query = {
+        $or:
+            [
+                { 'username': username },
+                { 'email': email },
+            ]
+    };
+    UserAccount.findOne(query)
         .then((userAccount) => {
-
             if (!userAccount) {
                 res.status(401).json({
                     message: "Authorization failed.  Could not find an account with username '" + req.body.userAccount.username + "'"
@@ -286,37 +282,37 @@ exports.attemptLogin = function (req, res, next) {
                 res.status(401).json({
                     message: "Authentication failed.  Bad password."
                 })
+            } else {
+                const expiresInSeconds = 90;
+                const token = jwt.sign(
+                    {
+                        email: foundUser.email,
+                        username: foundUser.username,
+                        userId: foundUser._id
+                    },
+                    {
+                        key: RSA_PRIVATE_KEY,
+                        passphrase: passphrase
+                    },
+                    {
+                        algorithm: 'RS256',
+                        expiresIn: expiresInSeconds,
+                    },
+                );
+                res.status(200).json({
+                    message: "Authentication successful.",
+                    data: {
+                        userAccount: {
+                            id: foundUser._id,
+                            username: foundUser.username,
+                            email: foundUser.email,
+                        },
+                        token: token,
+                        expiresIn: expiresInSeconds,
+                    }
+                })
             }
 
-            const token = jwt.sign(
-                {
-                    email: foundUser.email,
-                    username: foundUser.username,
-                    userId: foundUser._id
-                },
-                {
-                    key: RSA_PRIVATE_KEY,
-                    passphrase: passphrase
-                },
-                {
-                    algorithm: 'RS256',
-                    expiresIn: 120,
-
-                },
-            );
-            console.log("")
-            res.status(200).json({
-                message: "Authentication successful.",
-                data: {
-                    userAccount: {
-                        id: foundUser._id,
-                        username: foundUser.username,
-                        email: foundUser.email,
-                    },
-                    token: token,
-                    expiresIn: 120,
-                }
-            })
 
         })
         .catch((err) => {
@@ -365,6 +361,7 @@ exports.checkForExisting = function (req, res, next) {
                         code: '',
                     });
                 } else {
+                    //account does exist
                     let usernameIsUnique = true;
                     let emailIsUnique = true;
                     if (email === account.email) {
@@ -373,12 +370,41 @@ exports.checkForExisting = function (req, res, next) {
                     if (username === account.username) {
                         usernameIsUnique = false;
                     }
-                    return res.status(200).json({
-                        message: 'Credential already exists',
-                        usernameIsUnique: usernameIsUnique,
-                        emailIsUnique: emailIsUnique,
-                        code: account.registrationCode,
-                    });
+
+
+
+                    var accountIsRegistered = false;
+                    if (account.registeredAt) {
+                        if (account.registeredAt !== null && account.registeredAt !== "") {
+                            accountIsRegistered = true;
+                        }
+                    }
+                    if (accountIsRegistered) {
+                        return res.status(200).json({
+                            message: 'Credential already exists',
+                            usernameIsUnique: usernameIsUnique,
+                            emailIsUnique: emailIsUnique,
+                            alreadyRegistered: true,
+                            codeIsPresent: false,
+                            registeredAt: account.registeredAt,
+                        });
+                    } else {
+                        var codeIsPresent = false;
+                        if (account.registrationCode) {
+                            if (account.registrationCode !== null && account.registrationCode !== "") {
+                                codeIsPresent = true;
+                            }
+                        }
+                        return res.status(200).json({
+                            message: 'Credential already exists',
+                            usernameIsUnique: usernameIsUnique,
+                            emailIsUnique: emailIsUnique,
+                            alreadyRegistered: false,
+                            codeIsPresent: codeIsPresent,
+                            registeredAt: '',
+                        });
+                    }
+
                 }
             });
     } else {
