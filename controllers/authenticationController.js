@@ -6,6 +6,7 @@ const crypto = require("crypto");
 const nodemailer = require("nodemailer");
 const uuid = require("uuid");
 const moment = require("moment");
+const expressJwt = require("express-jwt");
 
 const RSA_PRIVATE_KEY = fs.readFileSync('key/private_key.key');
 const registration_password = fs.readFileSync('key/registration@balanceboardapp.com.txt')
@@ -255,9 +256,135 @@ exports.resendCode = function (req, res, next) {
     })
 }
 
+exports.pinUnlock = function (req, res, next) {
+    const pin = req.body.pin;
+    const email = req.body.email;
+    var foundUser = null;
+    console.log("Pin unlock:  ", req.body)
+    UserAccount.findOne({ "email": email })
+        .then((userAccount) => {
+            if (!userAccount) {
+                return res.status(500).json({
+                    message: "Error: no account by email: " + email,
+                    success: false,
+                    data: {},
+                });
+            } else {
+                foundUser = userAccount;
+                console.log("Found user is : ", foundUser)
+                return bcrypt.compare(pin, userAccount.pin);
+            }
+        })
+        .then((result) => {
+            if (!result) {
+                res.status(401).json({
+                    message: "Authentication failed.  Bad pin.",
+                    success: false,
+                    data: {},
+                })
+            } else {
+                const expiresInSeconds = 90;
+                const token = jwt.sign(
+                    {
+                        email: foundUser.email,
+                        username: foundUser.usernameStylized,
+                        userId: foundUser._id
+                    },
+                    {
+                        key: RSA_PRIVATE_KEY,
+                        passphrase: passphrase
+                    },
+                    {
+                        algorithm: 'RS256',
+                        expiresIn: expiresInSeconds,
+                    },
+                );
+                res.status(200).json({
+                    message: "Authentication successful.",
+                    success: true,
+                    data: {
+                        id: foundUser._id,
+                        username: foundUser.usernameStylized,
+                        email: foundUser.email,
+                        token: token,
+                        expiresIn: expiresInSeconds,
+                    }
+                });
+            }
+        })
+        .catch((err) => {
+            console.log("Error".red, err)
+            res.status(500).json({
+                message: "Authentication failed.  Bad pin.",
+                success: false,
+                data: {},
+            })
+        })
+}
+
+
+exports.forgotPassword = function (req, res, next) {
+    res.status(200).json({
+        message: "cool.  not implemented",
+        data: {}
+    });
+}
+
+
+exports.refreshToken = function (req, res, next) {
+
+    const userId = req.body.userId;
+    UserAccount.findById(userId, (err, foundUser)=>{
+        if(err){
+            return res.status(500).json({
+                message: "Error",
+                data: err
+            });
+        }else{
+            if(foundUser){
+                const expiresInSeconds = 90;
+                const newToken = jwt.sign(
+                    {
+                        email: foundUser.email,
+                        username: foundUser.usernameStylized,
+                        userId: foundUser._id
+                    },
+                    {
+                        key: RSA_PRIVATE_KEY,
+                        passphrase: passphrase
+                    },
+                    {
+                        algorithm: 'RS256',
+                        expiresIn: expiresInSeconds,
+                    },
+                );
+                res.status(200).json({
+                    message: "Fresh token",
+                    success: true,
+                    data: {
+                        id: foundUser._id,
+                        username: foundUser.usernameStylized,
+                        email: foundUser.email,
+                        token: newToken,
+                        expiresIn: expiresInSeconds,
+                    }
+                });
+    
+            }else{
+                return res.status(500).json({
+                    message: "Error of some kind",
+                    data: err
+                });
+            }
+        }
+    })
+
+
+}
+
 exports.attemptLogin = function (req, res, next) {
     var foundUser = null;
-    const email = req.body.email.toLowerCase();
+    const email = req.body.username.toLowerCase();
     const username = req.body.username.toLowerCase();
     const password = req.body.password;
     query = {
@@ -287,7 +414,7 @@ exports.attemptLogin = function (req, res, next) {
                 const token = jwt.sign(
                     {
                         email: foundUser.email,
-                        username: foundUser.username,
+                        username: foundUser.usernameStylized,
                         userId: foundUser._id
                     },
                     {
@@ -301,12 +428,11 @@ exports.attemptLogin = function (req, res, next) {
                 );
                 res.status(200).json({
                     message: "Authentication successful.",
+                    success: true,
                     data: {
-                        userAccount: {
-                            id: foundUser._id,
-                            username: foundUser.username,
-                            email: foundUser.email,
-                        },
+                        id: foundUser._id,
+                        username: foundUser.usernameStylized,
+                        email: foundUser.email,
                         token: token,
                         expiresIn: expiresInSeconds,
                     }
