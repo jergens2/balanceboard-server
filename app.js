@@ -8,19 +8,19 @@ const mongoose = require('mongoose');
 const expressJwt = require('express-jwt');
 const fs = require("fs");
 
-var authenticationRoutes = require('./routes/authentication');
-var userRoutes = require('./routes/userPreferences');
-var activityCategoryDefinitionRoutes = require('./routes/activityCategoryDefinition');
-var scheduleDayTemplateRoutes = require('./routes/scheduleDayTemplate');
-var scheduleRotationRoutes = require('./routes/scheduleRotation');
-var taskRoutes = require('./routes/task');
-var notebookRoutes = require('./routes/notebookEntry');
-var serverScriptsRoutes = require('./routes/serverScripts');
-var routineDefinitionRoutes = require('./routes/routineDefinition');
-var dailyTaskListRoutes = require('./routes/dailyTaskList');
-var activityDayDataRoutes = require('./routes/activityDayData');
-var socialRoutes = require('./routes/social');
-var daybookDayItemRoutes = require('./routes/daybookDayItem');
+const authenticationRoutes = require('./routes/authenticationRoutes');
+const userRoutes = require('./routes/userPreferences');
+const activityCategoryDefinitionRoutes = require('./routes/activityCategoryDefinitionRoutes');
+const scheduleDayTemplateRoutes = require('./routes/scheduleDayTemplate');
+const scheduleRotationRoutes = require('./routes/scheduleRotation');
+const taskRoutes = require('./routes/task');
+const notebookRoutes = require('./routes/notebookEntry');
+const serverScriptsRoutes = require('./routes/serverScripts');
+const routineDefinitionRoutes = require('./routes/routineDefinition');
+const dailyTaskListRoutes = require('./routes/dailyTaskList');
+const socialRoutes = require('./routes/socialRoutes');
+const daybookDayItemRoutes = require('./routes/daybookDayItemRoutes');
+const sleepManagementRoutes = require('./routes/sleepManagementRoutes');
 
 
 const config = require('./config.json');
@@ -80,7 +80,6 @@ const checkIfAuthenticated = expressJwt({
 
 app.use('/api/user', checkIfAuthenticated, userRoutes );
 app.use('/api/activity-category-definition', checkIfAuthenticated, activityCategoryDefinitionRoutes);
-// app.use('/api/activity-category-definition-old', activityCategoryDefinitionRoutesOld);
 app.use('/api/schedule-day-template', checkIfAuthenticated, scheduleDayTemplateRoutes);
 app.use('/api/schedule-rotation', checkIfAuthenticated, scheduleRotationRoutes);
 app.use('/api/task', checkIfAuthenticated, taskRoutes);
@@ -88,9 +87,9 @@ app.use('/api/notebook', checkIfAuthenticated, notebookRoutes);
 app.use('/api/serverScripts', checkIfAuthenticated, serverScriptsRoutes);
 app.use('/api/routine-definition', checkIfAuthenticated, routineDefinitionRoutes);
 app.use('/api/daily-task-list', checkIfAuthenticated, dailyTaskListRoutes);
-app.use('/api/activity-day-data', checkIfAuthenticated, activityDayDataRoutes);
 app.use('/api/social', checkIfAuthenticated, socialRoutes);
 app.use('/api/daybook-day-item', checkIfAuthenticated, daybookDayItemRoutes);
+app.use('/api/sleep-manager', checkIfAuthenticated, sleepManagementRoutes);
 
 
 app.use('/', function(req, res) {

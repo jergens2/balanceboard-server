@@ -1,13 +1,6 @@
 const express = require('express');
 const router = express.Router();
 
-const fs = require("fs");
-const expressJwt = require('express-jwt');
-const RSA_PUBLIC_KEY = fs.readFileSync('./key/public_key.key');
-const checkIfAuthenticated = expressJwt({
-  secret: RSA_PUBLIC_KEY,
-});
-
 const controller = require('../controllers/activityCategoryDefinitionController');
 
 

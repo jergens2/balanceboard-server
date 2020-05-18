@@ -398,7 +398,7 @@ exports.attemptLogin = function (req, res, next) {
         .then((userAccount) => {
             if (!userAccount) {
                 res.status(401).json({
-                    message: "Authorization failed.  Could not find an account with username '" + req.body.userAccount.username + "'"
+                    message: "Authorization failed.  Could not find an account with username: " + email,
                 })
             }
             foundUser = userAccount;
