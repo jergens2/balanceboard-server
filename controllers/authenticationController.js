@@ -264,6 +264,7 @@ exports.pinUnlock = function (req, res, next) {
     UserAccount.findOne({ "email": email })
         .then((userAccount) => {
             if (!userAccount) {
+                console.log("Error: no account found - " + email);
                 return res.status(500).json({
                     message: "Error: no account by email: " + email,
                     success: false,
@@ -271,18 +272,19 @@ exports.pinUnlock = function (req, res, next) {
                 });
             } else {
                 foundUser = userAccount;
-                console.log("Found user is : ", foundUser)
                 return bcrypt.compare(pin, userAccount.pin);
             }
         })
         .then((result) => {
             if (!result) {
+                console.log("Authentication failed.  Bad pin.");
                 res.status(401).json({
                     message: "Authentication failed.  Bad pin.",
                     success: false,
                     data: {},
                 })
             } else {
+                console.log("Successful Pin authentication...")
                 const expiresInSeconds = 90;
                 const token = jwt.sign(
                     {
@@ -315,7 +317,7 @@ exports.pinUnlock = function (req, res, next) {
         .catch((err) => {
             console.log("Error".red, err)
             res.status(500).json({
-                message: "Authentication failed.  Bad pin.",
+                message: "Authentication failed.  Server error",
                 success: false,
                 data: {},
             })
