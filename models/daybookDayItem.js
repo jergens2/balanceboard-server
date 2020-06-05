@@ -12,10 +12,8 @@ var DaybookDayItemSchema = new Schema(
     daybookTimelogEntryDataItems: { type: [Schema.Types.Mixed], required: true },
     timeDelineators: { type: [String], required: true },
 
-    sleepInputItem: { type: Schema.Types.Mixed, required: true },
-    sleepEnergyLevelInputs: { type: [Schema.Types.Mixed], required: true },
+    sleepInputItems: { type: [Schema.Types.Mixed], required: true },
 
-    daybookActivityDataItems: { type: [Schema.Types.Mixed], required: true },
     dailyTaskListDataItems: { type: [Schema.Types.Mixed], required: true },
     dayStructureDataItems: { type: [Schema.Types.Mixed], required: true },
 

@@ -127,7 +127,12 @@ exports.update = function (req, res, next) {
         daybookTimelogEntryDataItems: req.body.daybookTimelogEntryDataItems,
         timeDelineators: timeDelineators,
 
-        sleepInputItem: req.body.sleepInputItem,
+
+
+        sleepInputItems: req.body.sleepInputItems,
+
+
+
         sleepEnergyLevelInputs: req.body.sleepEnergyLevelInputs,
 
         daybookActivityDataItems: req.body.daybookActivityDataItems,

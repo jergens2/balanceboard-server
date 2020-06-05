@@ -12,6 +12,8 @@ const RSA_PRIVATE_KEY = fs.readFileSync('key/private_key.key');
 const registration_password = fs.readFileSync('key/registration@balanceboardapp.com.txt')
 const passphrase = fs.readFileSync('key/passphrase.txt');
 
+const tokenExpirationSeconds = 300; // 5 minutes
+
 function generateEmailCode() {
     let code = "";
     for (let i = 0; i < 16; i++) {
@@ -285,7 +287,6 @@ exports.pinUnlock = function (req, res, next) {
                 })
             } else {
                 console.log("Successful Pin authentication...")
-                const expiresInSeconds = 90;
                 const token = jwt.sign(
                     {
                         email: foundUser.email,
@@ -298,7 +299,7 @@ exports.pinUnlock = function (req, res, next) {
                     },
                     {
                         algorithm: 'RS256',
-                        expiresIn: expiresInSeconds,
+                        expiresIn: tokenExpirationSeconds,
                     },
                 );
                 res.status(200).json({
@@ -309,7 +310,7 @@ exports.pinUnlock = function (req, res, next) {
                         username: foundUser.usernameStylized,
                         email: foundUser.email,
                         token: token,
-                        expiresIn: expiresInSeconds,
+                        expiresIn: tokenExpirationSeconds,
                     }
                 });
             }
@@ -344,7 +345,6 @@ exports.refreshToken = function (req, res, next) {
             });
         }else{
             if(foundUser){
-                const expiresInSeconds = 90;
                 const newToken = jwt.sign(
                     {
                         email: foundUser.email,
@@ -357,7 +357,7 @@ exports.refreshToken = function (req, res, next) {
                     },
                     {
                         algorithm: 'RS256',
-                        expiresIn: expiresInSeconds,
+                        expiresIn: tokenExpirationSeconds,
                     },
                 );
                 res.status(200).json({
@@ -368,7 +368,7 @@ exports.refreshToken = function (req, res, next) {
                         username: foundUser.usernameStylized,
                         email: foundUser.email,
                         token: newToken,
-                        expiresIn: expiresInSeconds,
+                        expiresIn: tokenExpirationSeconds,
                     }
                 });
     
@@ -412,7 +412,6 @@ exports.attemptLogin = function (req, res, next) {
                     message: "Authentication failed.  Bad password."
                 })
             } else {
-                const expiresInSeconds = 90;
                 const token = jwt.sign(
                     {
                         email: foundUser.email,
@@ -425,7 +424,7 @@ exports.attemptLogin = function (req, res, next) {
                     },
                     {
                         algorithm: 'RS256',
-                        expiresIn: expiresInSeconds,
+                        expiresIn: tokenExpirationSeconds,
                     },
                 );
                 res.status(200).json({
@@ -436,7 +435,7 @@ exports.attemptLogin = function (req, res, next) {
                         username: foundUser.usernameStylized,
                         email: foundUser.email,
                         token: token,
-                        expiresIn: expiresInSeconds,
+                        expiresIn: tokenExpirationSeconds,
                     }
                 })
             }
