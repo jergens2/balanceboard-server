@@ -9,7 +9,7 @@ const expressJwt = require('express-jwt');
 const fs = require("fs");
 
 const authenticationRoutes = require('./routes/authenticationRoutes');
-const userRoutes = require('./routes/userPreferences');
+const userAccountRoutes = require('./routes/userAccountProfileRoutes');
 const activityCategoryDefinitionRoutes = require('./routes/activityCategoryDefinitionRoutes');
 const scheduleDayTemplateRoutes = require('./routes/scheduleDayTemplate');
 const scheduleRotationRoutes = require('./routes/scheduleRotation');
@@ -78,7 +78,7 @@ const checkIfAuthenticated = expressJwt({
 });
 
 
-app.use('/api/user', checkIfAuthenticated, userRoutes );
+app.use('/api/user-account-profile', checkIfAuthenticated, userAccountRoutes );
 app.use('/api/activity-category-definition', checkIfAuthenticated, activityCategoryDefinitionRoutes);
 app.use('/api/schedule-day-template', checkIfAuthenticated, scheduleDayTemplateRoutes);
 app.use('/api/schedule-rotation', checkIfAuthenticated, scheduleRotationRoutes);
@@ -90,6 +90,9 @@ app.use('/api/daily-task-list', checkIfAuthenticated, dailyTaskListRoutes);
 app.use('/api/social', checkIfAuthenticated, socialRoutes);
 app.use('/api/daybook-day-item', checkIfAuthenticated, daybookDayItemRoutes);
 app.use('/api/sleep-manager', checkIfAuthenticated, sleepManagementRoutes);
+
+
+
 
 
 app.use('/', function(req, res) {
