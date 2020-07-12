@@ -40,7 +40,7 @@ exports.getById = function( req, res, next) {
 
 exports.create = function (req, res, next) {
 
-    console.log("Creating task: " , req.body);
+    // console.log("Creating task: " , req.body);
     const task = new Task({
         userId: req.body.userId,
         title: req.body.title,
@@ -70,14 +70,14 @@ exports.create = function (req, res, next) {
     });
 };
 exports.delete = function (req, res, next) {
-    console.log("Deleting: " , req.body);
+    // console.log("Deleting: " , req.body);
     Task.findByIdAndDelete({ '_id': new ObjectId(req.body._id) }, (err, doc) => {
         if (err) return res.status(500).json({ message: 'DB error deleting Task object', data: null });
         return res.status(200).json({ message: "Successfully deleted Task object", data: null });
     });
 };
 exports.update = function (req, res, next) {
-    console.log("updating task.  incoming request:", req.body );
+    // console.log("updating task.  incoming request:", req.body );
 
     const updateTask = new Task({
         _id: req.body.id,
@@ -104,7 +104,7 @@ exports.update = function (req, res, next) {
         if (err) return res.status(500).json({ message: 'DB error updating Task object', data: err });
         if (!task) return res.status(500).json({ message: "Error updating Task object", data: req.body.id });
 
-        console.log("updated task: ", task);
+        // console.log("updated task: ", task);
         return res.status(200).json({ message: "Successfully update Task object", data: task });
     });
 };

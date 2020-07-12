@@ -6,9 +6,8 @@ var moment = require('moment');
 
 exports.get = function (req, res, next) {
     const userId = req.params.userId;
-    console.log("Finding RTDefinitions by userID", userId);
+    // console.log("Finding RTDefinitions by userID", userId);
     RoutineDefinition.find({ 'userId': ObjectId(userId) }, (err, routineDefinitions) => {
-        console.log("Bazinga", routineDefinitions);
         if (err) {
             return res.status(500).json({
                 message: "DB Error finding RoutineDefinition object",
@@ -75,7 +74,7 @@ exports.update = function (req, res, next) {
         if (err) return res.status(500).json({ message: 'DB error updating RoutineDefinition object', data: err });
         if (!updatedDefinition) return res.status(500).json({ message: "Error updating RoutineDefinition object", data: req.body._id });
 
-        console.log("updated task: ", updatedDefinition);
+        // console.log("updated task: ", updatedDefinition);
         return res.status(200).json({ message: "Successfully update RoutineDefinition object", data: updatedDefinition });
     });
 };

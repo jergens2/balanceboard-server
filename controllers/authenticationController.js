@@ -36,7 +36,7 @@ exports.startRegistration = function (req, res, next) {
         pin: string,
      * }
      */
-    console.log("Registering new user: ".green, req.body);
+    // console.log("Registering new user: ".green, req.body);
 
     const email = req.body.email.toLowerCase();
     const usernameValue = req.body.username;
@@ -127,14 +127,14 @@ exports.startRegistration = function (req, res, next) {
 exports.finalizeRegistration = function (req, res, next) {
     const code = req.body.code;
     const email = req.body.email;
-    console.log("Searching for thing by email: ", req.body)
+    // console.log("Searching for thing by email: ", req.body)
     if (code) {
         UserAccount.findOne({ 'email': email, "registeredAt": "" }, (err, foundAccount) => {
             if (err) {
                 return res.status(500).json({ message: 'Error finding user account ', err });
             } else {
                 if (foundAccount) {
-                    console.log("Found account: " + foundAccount.registrationCode, foundAccount)
+                    // console.log("Found account: " + foundAccount.registrationCode, foundAccount)
                     if (foundAccount.registrationCode === code) {
                         const currentTime = moment().toISOString();
                         const newAccount = new UserAccount({
@@ -262,7 +262,7 @@ exports.pinUnlock = function (req, res, next) {
     const pin = req.body.pin;
     const email = req.body.email;
     var foundUser = null;
-    console.log("Pin unlock:  ", req.body)
+    // console.log("Pin unlock:  ", req.body)
     UserAccount.findOne({ "email": email })
         .then((userAccount) => {
             if (!userAccount) {
@@ -279,14 +279,14 @@ exports.pinUnlock = function (req, res, next) {
         })
         .then((result) => {
             if (!result) {
-                console.log("Authentication failed.  Bad pin.");
+                // console.log("Authentication failed.  Bad pin.");
                 res.status(401).json({
                     message: "Authentication failed.  Bad pin.",
                     success: false,
                     data: {},
                 })
             } else {
-                console.log("Successful Pin authentication...")
+                // console.log("Successful Pin authentication...")
                 const token = jwt.sign(
                     {
                         email: foundUser.email,

@@ -30,7 +30,7 @@ exports.create = function (req, res, next) {
         delineations: req.body.delineations,
     });
 
-    console.log("Thing is: " , scheduleDayTemplate)
+    // console.log("Thing is: " , scheduleDayTemplate)
     scheduleDayTemplate.save((err) => {
         if (err) {
             return res.status(500).json({ message: 'DB Error creating ScheduleDayTemplate object', data: err });

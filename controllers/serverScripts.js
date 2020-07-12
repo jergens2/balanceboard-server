@@ -7,7 +7,7 @@ var colors = require('colors');
 
 
 exports.cleanseNotes = function (req, res, next) {
-    console.log("Cleansing Notes");
+    // console.log("Cleansing Notes");
 
     NotebookEntry.find({ 'userId': ObjectId("5b9c362dd71b00180a7cf701") }, (err, notes) => {
 
@@ -17,8 +17,8 @@ exports.cleanseNotes = function (req, res, next) {
 
             
 
-                console.log("Note: ", note);
-                console.log(note.forDateISO)
+                // console.log("Note: ", note);
+                // console.log(note.forDateISO)
 
                 const newNote = {
                     _id: note._id,

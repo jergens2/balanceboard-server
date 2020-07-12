@@ -29,7 +29,7 @@ exports.update = function (req, res, next) {
         nextWakeupUTCOffset: nextWakeupUTCOffset,
     });
 
-    console.log("Updating sleep profile", newProfile);
+    // console.log("Updating sleep profile", newProfile);
 
     SleepManagerProfile.findOne({ 'userId': userId }, (err, foundProfile)=>{
         if (err) {
@@ -98,9 +98,9 @@ exports.update = function (req, res, next) {
     })
 }
 exports.read = function (req, res, next) {
-    console.log(req.body)
+    // console.log(req.body)
     const userId = req.body.userId;
-    console.log("finding a profile by usrid", userId)
+    // console.log("finding a profile by usrid", userId)
     SleepManagerProfile.findOne({'userId': userId}, (err, profile) => {
         if (err) {
             res.status(500).json({

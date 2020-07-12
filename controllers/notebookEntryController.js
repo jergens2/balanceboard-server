@@ -24,7 +24,7 @@ exports.get = function (req, res, next) {
 exports.create = function (req, res, next) {
 
 
-    console.log("Request:", req.body)
+    // console.log("Request:", req.body)
 
     const notebookEntry = new NotebookEntry({
         userId: req.body.userId,
@@ -40,8 +40,8 @@ exports.create = function (req, res, next) {
     });
 
 
-    console.log("Saving notebook entry")
-    console.log(notebookEntry);
+    // console.log("Saving notebook entry")
+    // console.log(notebookEntry);
 
     notebookEntry.save((err) => {
         if (err) {
@@ -62,7 +62,7 @@ exports.delete = function (req, res, next) {
     });
 };
 exports.update = function (req, res, next) {
-    console.log("updating notebookEntry.  incoming request:", req.body );
+    // console.log("updating notebookEntry.  incoming request:", req.body );
 
     const updateNotebookEntry = new NotebookEntry({
         _id: req.body.id,
@@ -84,7 +84,7 @@ exports.update = function (req, res, next) {
         if (err) return res.status(500).json({ message: 'DB error updating NotebookEntry object', data: err });
         if (!notebookEntry) return res.status(500).json({ message: "Error updating NotebookEntry object", data: req.body.id });
 
-        console.log("updated notebookEntry: ", notebookEntry);
+        // console.log("updated notebookEntry: ", notebookEntry);
         return res.status(200).json({ message: "Successfully update NotebookEntry object", data: notebookEntry });
     });
 };

@@ -21,7 +21,7 @@ exports.create = function (req, res, next) {
         if (err) {
             return res.status(500).json({ message: 'DB Error creating TimelogEntry object', data: err });
         } else {
-            console.log("Successfully build new TimelogEntry".green, timelogEntry);
+            // console.log("Successfully build new TimelogEntry".green, timelogEntry);
             return res.status(200).json({
                 message: 'TimelogEntry object saved',
                 data: timelogEntry
@@ -31,7 +31,7 @@ exports.create = function (req, res, next) {
     });
 };
 exports.delete = function (req, res, next) {
-    console.log("Deleting", req.body.id);
+    // console.log("Deleting", req.body.id);
     TimelogEntry.findByIdAndDelete({ '_id': new ObjectId(req.body.id) }, (err, doc) => {
         if (err) return res.status(500).json({ message: 'DB error deleting TimelogEntry object', data: null });
         return res.status(200).json({ message: "Successfully deleted TimelogEntry object", data: null });

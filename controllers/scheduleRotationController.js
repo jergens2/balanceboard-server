@@ -23,7 +23,7 @@ exports.get = function (req, res, next) {
 
 exports.create = function (req, res, next) {
 
-    console.log("Creating a new Schedule Rotation: ", req.body)
+    // console.log("Creating a new Schedule Rotation: ", req.body)
     const scheduleRotation = new ScheduleRotation({
         userId: req.body.userId,
         dayTemplateItems: req.body.dayTemplateItems,
@@ -50,7 +50,7 @@ exports.delete = function (req, res, next) {
 
 
 exports.update = function (req, res, next) {
-    console.log("Updating schedule rotation.  Warning: not implemented")
+    // console.log("Updating schedule rotation.  Warning: not implemented")
 
 
     const updateScheduleRotation = new ScheduleRotation({

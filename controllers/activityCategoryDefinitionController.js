@@ -1,6 +1,7 @@
 
 var ObjectId = require('mongoose').Types.ObjectId;
 const ActivityCategoryDefinition = require('../models/activityCategoryDefinition');
+const { update } = require('../models/activityCategoryDefinition');
 
 
 exports.createDefault = function (req, res, next) {
@@ -125,6 +126,7 @@ exports.delete = function (req, res, next) {
 
 exports.update = function (req, res, next) {
     let updatedActivityCategoryDefinition = req.body;
+    // console.log("UPDATING ACTIVITY: " , updatedActivityCategoryDefinition);
     ActivityCategoryDefinition.findByIdAndUpdate({ '_id': new ObjectId(updatedActivityCategoryDefinition._id) }, updatedActivityCategoryDefinition, { new: true }, (err, document) => {
         if (err) return res.status(500).json({ message: 'DB error updating ActivityCategoryDefinition object', data: err });
         else {

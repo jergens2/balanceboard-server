@@ -7,7 +7,7 @@ var moment = require('moment');
 
 
 exports.save = function (req, res, next) {
-    console.log("Saving changes: ", req.body)
+    // console.log("Saving changes: ", req.body)
 
     const idVal = req.body.id;
     
@@ -15,14 +15,12 @@ exports.save = function (req, res, next) {
     // userId: { type: String, required: true, unique: true },
     // userProfile: { type: Schema.Types.Mixed, required: true },
     if (!idVal) {
-        console.log("No id")
         const updateItem = new UserAccountProfile({
             userId: req.body.userId,
             userProfile: req.body.userProfile
         });
         updateItem.save((err, savedItem) => {
             if (err) {
-                console.log("erreroereoreor2".red, err)
                 return res.status(500).json({ message: 'Failed to save new item', data: err, success: false });
             } else {
                 return res.status(200).json({ message: 'Successfully saved new item', data: savedItem, success: true });
@@ -61,7 +59,7 @@ exports.save = function (req, res, next) {
 };
 
 exports.get = function (req, res, next) {
-    console.log("GETTING: ", req.body)
+    // console.log("GETTING: ", req.body)
     const userId = req.body.userId;
     UserAccountProfile.findOne({ "userId": userId }, (err, userAccountProfile) => {
         if (err) return res.status(500).json({ message: 'Error saving userAccount settings', data: err, success: false });

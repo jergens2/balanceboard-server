@@ -74,7 +74,7 @@ exports.create = function (req, res, next) {
         taskItemIds: req.body.taskItemIds,
     });
 
-    console.log("Creating: daybookDayItem for date", dateYYYYMMDD);
+    // console.log("Creating: daybookDayItem for date", dateYYYYMMDD);
 
     DaybookDayItem.findOne({
         'userId': ObjectId(req.params.userId),
@@ -147,7 +147,7 @@ exports.update = function (req, res, next) {
         taskItemIds: req.body.taskItemIds,
     });
 
-    console.log("Updating daybook Day Item: ", updateDaybookDayItem);
+    // console.log("Updating daybook Day Item: ", updateDaybookDayItem);
 
 
     DaybookDayItem.findByIdAndUpdate(req.body._id, updateDaybookDayItem, { new: true }, (err, daybookDayItem) => {
