@@ -30,7 +30,7 @@ var DaybookDayItemSchema = new Schema(
     taskItemIds: { type: [String], required: true },
   }, 
   { 
-    collection: 'daybookDayItem_2' 
+    collection: 'daybookDayItem_dev' 
   }
 );
 

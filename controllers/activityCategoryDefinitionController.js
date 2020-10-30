@@ -1,7 +1,6 @@
 
 var ObjectId = require('mongoose').Types.ObjectId;
 const ActivityCategoryDefinition = require('../models/activityCategoryDefinition');
-const { update } = require('../models/activityCategoryDefinition');
 
 
 exports.createDefault = function (req, res, next) {
@@ -48,8 +47,8 @@ exports.createDefault = function (req, res, next) {
             description: activity.description,
 
             isSleepActivity: activity.isSleepActivity,
-            isRootLevel: activity.isRootLevel,
             canDelete: activity.canDelete,
+            isInTrash: activity.isInTrash,
     
             durationSetting: activity.durationSetting,
             specifiedDurationMinutes: activity.specifiedDurationMinutes,
@@ -83,8 +82,8 @@ exports.create = function (req, res, next) {
         description: req.body.description,
 
         isSleepActivity: req.body.isSleepActivity,
-        isRootLevel: req.body.isRootLevel,
         canDelete: req.body.canDelete,
+        isInTrash: req.body.isInTrash,
     
 
         durationSetting: req.body.durationSetting,
@@ -112,15 +111,14 @@ exports.create = function (req, res, next) {
 
     });
 };
-exports.delete = function (req, res, next) {
-    ActivityCategoryDefinition.findByIdAndRemove({ '_id': new ObjectId(req.body.id) }, (err, document) => {
-        if (err) return res.status(500).json({ message: 'DB error deleting ActivityCategoryDefinition object', status: "ERROR", data: err });
-        if (document) {
-            return res.status(200).json({ message: "ActivityCategoryDefinition object successfully deleted", status: "SUCCESS", data: req.body.id });
-        } else {
-            return res.status(200).json({ message: "no document", status: "NO_DOC", data: req.body.id });
+exports.permanentlyDelete = function (req, res, next) {
+    // console.log("deleting item: " , req.body)
+    const id = new ObjectId(req.body._id);
+    ActivityCategoryDefinition.findByIdAndDelete(id, (err) => {
+        if (err) return res.status(500).json({ message: 'DB error deleting ActivityCategoryDefinition object', success: false, data: err });
+        else{
+            return res.status(200).json({ message: "ActivityCategoryDefinition object successfully deleted", success: true, data: req.body._id });
         }
-
     });
 };
 

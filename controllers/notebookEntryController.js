@@ -19,6 +19,29 @@ exports.get = function (req, res, next) {
         return res.status(200).json({ message: "Successfully found NotebookEntries", data: notebookEntries });
     })
 }
+/**
+ * need to provide a start date.  
+ */
+exports.getRange = function (req, res, next) {
+    const userId = req.params.userId;
+    const startISO = req.params.startISO;
+    const query = {
+        'userId': ObjectId(userId),
+        'journalDateISO': {$gt: startISO},
+    };
+    NotebookEntry.find(query, (err, notebookEntries) => {
+        if (err) {
+            return res.status(500).json({
+                message: "DB Error finding NotebookEntry object",
+                data: err
+            });
+        }
+        if (!notebookEntries) {
+            return res.status(500).json({ message: "Could not find NotebookEntries", data: req.params.id });
+        }
+        return res.status(200).json({ message: "Successfully found NotebookEntries", data: notebookEntries });
+    })
+}
 
 
 exports.create = function (req, res, next) {
@@ -56,7 +79,8 @@ exports.create = function (req, res, next) {
     });
 };
 exports.delete = function (req, res, next) {
-    NotebookEntry.findByIdAndDelete({ '_id': new ObjectId(req.body.id) }, (err, doc) => {
+    console.log("deleting: " + req.body._id)
+    NotebookEntry.findByIdAndDelete(req.body._id, (err) => {
         if (err) return res.status(500).json({ message: 'DB error deleting NotebookEntry object', data: null });
         return res.status(200).json({ message: "Successfully deleted NotebookEntry object", data: null });
     });

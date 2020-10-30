@@ -151,6 +151,45 @@ exports.finalizeRegistration = function (req, res, next) {
                             if (err) {
                                 return res.status(500).json({ message: 'Error finding user account ', err });
                             } else {
+                                UserAccount.count({}, (err, count) => {
+                                    if (count) {
+                                        const userEmail = req.body.email.toLowerCase();
+                                        const adminEmail = "admin@balanceboardapp.com";
+                                        const subjectLine = "[" + count + "]  " + userEmail;
+
+                                        const code = generateEmailCode();
+                                        var textBody = "A new account has been registered on balanceboard.app\n" + code;
+                                        var htmlBody = "Email address: " + userEmail + " \nUsername: " + foundAccount.username;
+
+
+                                        const transporter = nodemailer.createTransport({
+                                            host: "box.balanceboardapp.com",
+                                            port: 587,
+                                            secure: false, // true for 465, false for other ports
+                                            auth: {
+                                                user: 'registration@balanceboardapp.com',
+                                                pass: registration_password,
+                                            }
+                                        });
+
+                                        const message = {
+                                            from: '"Balanceboard Registration" <registration@balanceboardapp.com>', // sender address
+                                            to: adminEmail, // list of receivers
+                                            subject: subjectLine, // Subject line
+                                            text: textBody, // plain text body
+                                            html: htmlBody, // html body
+                                            // dsn: {
+                                            //     id: uuid.v4(),
+                                            //     return: 'full',
+                                            //     notify: ['success', 'failure', 'delay'],
+                                            //     recipient: 'registration@balanceboardapp.com'
+                                            // }
+                                        }
+
+                                        let send = transporter.sendMail(message, (err, info) => {
+                                        })
+                                    }
+                                })
                                 return res.status(200).json({ message: 'Successfully matched the registration codes!  Account is registered.', currentTime: currentTime, codeMatch: true });
                             }
                         })
@@ -337,14 +376,14 @@ exports.forgotPassword = function (req, res, next) {
 exports.refreshToken = function (req, res, next) {
 
     const userId = req.body.userId;
-    UserAccount.findById(userId, (err, foundUser)=>{
-        if(err){
+    UserAccount.findById(userId, (err, foundUser) => {
+        if (err) {
             return res.status(500).json({
                 message: "Error",
                 data: err
             });
-        }else{
-            if(foundUser){
+        } else {
+            if (foundUser) {
                 const newToken = jwt.sign(
                     {
                         email: foundUser.email,
@@ -371,8 +410,8 @@ exports.refreshToken = function (req, res, next) {
                         expiresIn: tokenExpirationSeconds,
                     }
                 });
-    
-            }else{
+
+            } else {
                 return res.status(500).json({
                     message: "Error of some kind",
                     data: err
@@ -385,10 +424,17 @@ exports.refreshToken = function (req, res, next) {
 }
 
 exports.attemptLogin = function (req, res, next) {
-    var foundUser = null;
-    const email = req.body.username.toLowerCase();
-    const username = req.body.username.toLowerCase();
-    const password = req.body.password;
+    console.log("ATTEMPTING LOGIN", req.body)
+
+    var email = '';
+    var username = '';
+    if(req.body.email){
+        email = req.body.email.toLowerCase();
+    }
+    if(req.body.username){
+        username = req.body.username.toLowerCase();
+    }
+    const password = req.body.password || '';
     query = {
         $or:
             [
@@ -396,58 +442,64 @@ exports.attemptLogin = function (req, res, next) {
                 { 'email': email },
             ]
     };
-    UserAccount.findOne(query)
-        .then((userAccount) => {
-            if (!userAccount) {
-                res.status(401).json({
-                    message: "Authorization failed.  Could not find an account with username: " + email,
-                })
-            }
-            foundUser = userAccount;
-            return bcrypt.compare(req.body.password, userAccount.password);
-        })
-        .then((result) => {
-            if (!result) {
-                res.status(401).json({
-                    message: "Authentication failed.  Bad password."
-                })
-            } else {
-                const token = jwt.sign(
-                    {
-                        email: foundUser.email,
-                        username: foundUser.usernameStylized,
-                        userId: foundUser._id
-                    },
-                    {
-                        key: RSA_PRIVATE_KEY,
-                        passphrase: passphrase
-                    },
-                    {
-                        algorithm: 'RS256',
-                        expiresIn: tokenExpirationSeconds,
-                    },
-                );
-                res.status(200).json({
-                    message: "Authentication successful.",
-                    success: true,
-                    data: {
-                        id: foundUser._id,
-                        username: foundUser.usernameStylized,
-                        email: foundUser.email,
-                        token: token,
-                        expiresIn: tokenExpirationSeconds,
-                    }
-                })
-            }
 
+    console.log("USERNAME IS " + username)
+    console.log("EMAIL IS " + email)
 
-        })
-        .catch((err) => {
-            console.log("Error".red, err)
-            res.status(401).json({
-                message: "Error.  Authentication failed."
+    UserAccount.findOne(query, (err, account) => {
+        if (err) {
+            console.log("Error for some reason", err)
+            return res.status(500).json({ message: 'Error', data: err })
+        }
+        if (!account) {
+            return res.status(401).json({
+                message: "Authorization failed.  Could not find an account with username: " + email,
             })
-        })
+        } else {
+            bcrypt.compare(req.body.password, account.password, (err, same) => {
+                if (err) {
+                    console.log("Error: ", err);
+                    return res.status(401).json({
+                        message: "Error:",
+                        error: err,
+                    })
+                } else {
+                    if (same) {
+                        const token = jwt.sign(
+                            {
+                                email: account.email,
+                                username: account.usernameStylized,
+                                userId: account._id
+                            },
+                            {
+                                key: RSA_PRIVATE_KEY,
+                                passphrase: passphrase
+                            },
+                            {
+                                algorithm: 'RS256',
+                                expiresIn: tokenExpirationSeconds,
+                            },
+                        );
+                        return res.status(200).json({
+                            message: "Authentication successful.",
+                            success: true,
+                            data: {
+                                id: account._id,
+                                username: account.usernameStylized,
+                                email: account.email,
+                                token: token,
+                                expiresIn: tokenExpirationSeconds,
+                            }
+                        })
+                    } else {
+                        return res.status(401).json({
+                            message: "Authentication failed.  Bad password."
+                        });
+                    }
+                }
+            });
+        }
+    });
 
 };
 

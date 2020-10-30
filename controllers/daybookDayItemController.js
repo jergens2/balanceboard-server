@@ -32,6 +32,8 @@ exports.getInRange = function (req, res, next) {
                 $lte: endDateYYYYMMDD,
             },
         }, (err, daybookDayItems) => {
+
+            // console.log("DAYBOOK ITEMS from " + startDateYYYYMMDD + " to " + endDateYYYYMMDD, daybookDayItems)
             if (err) {
                 return res.status(500).json({
                     message: "DB Error finding DaybookDayItem object",
@@ -112,33 +114,19 @@ exports.delete = function (req, res, next) {
     });
 };
 exports.update = function (req, res, next) {
-    var timeDelineators = [];
-    const requestDelineators = req.body.timeDelineators;
-    for(let i=0; i<requestDelineators.length; i++){
-        if(timeDelineators.indexOf(requestDelineators[i]) === -1){
-            timeDelineators.push(requestDelineators[i]);
-        }
-    }
+
+    // console.log("UPDATING DAYBOOK DAY ITEM: " , req.body.dateYYYYMMDD, req.body)
     const updateDaybookDayItem = new DaybookDayItem({
         _id: req.body._id,
         userId: req.body.userId,
         dateYYYYMMDD: req.body.dateYYYYMMDD,
-
         daybookTimelogEntryDataItems: req.body.daybookTimelogEntryDataItems,
-        timeDelineators: timeDelineators,
-
-
-
+        timeDelineators: req.body.timeDelineators,
         sleepInputItems: req.body.sleepInputItems,
-
-
-
         sleepEnergyLevelInputs: req.body.sleepEnergyLevelInputs,
-
         daybookActivityDataItems: req.body.daybookActivityDataItems,
         dailyTaskListDataItems: req.body.dailyTaskListDataItems,
         dayStructureDataItems: req.body.dayStructureDataItems,
-
         dailyWeightLogEntryKg: req.body.dailyWeightLogEntryKg,
         scheduledActivityItems: req.body.scheduledActivityItems,
         dayTemplateId: req.body.dayTemplateId,
@@ -151,11 +139,20 @@ exports.update = function (req, res, next) {
 
 
     DaybookDayItem.findByIdAndUpdate(req.body._id, updateDaybookDayItem, { new: true }, (err, daybookDayItem) => {
-
-        if (err) return res.status(500).json({ message: 'DB error updating DaybookDayItem object', data: err });
+        if (err) return startDateYYYYMMDD.status(500).json({ message: 'DB error updating DaybookDayItem object', data: err });
         if (!daybookDayItem) return res.status(500).json({ message: "Error updating DaybookDayItem object", data: req.body.id });
-
-        // console.log("updated daybookDayItem: ", daybookDayItem);
         return res.status(200).json({ message: "Successfully update DaybookDayItem object", data: daybookDayItem });
     });
 };
+
+exports.getAll = function (req, res, next) {
+    const userId = req.params.userId;
+    const query = { 'userId': userId, }
+    DaybookDayItem.find(query, (err, userItems) => {
+        if (err) return res.status(500).json({ message: 'Error retreiving items', data: err });
+        else {
+            if (!userItems) return res.status(500).json({ message: "Error finding items", data: null });
+            return res.status(200).json({ message: "Successfully update DaybookDayItem object", data: userItems });
+        }
+    });
+}

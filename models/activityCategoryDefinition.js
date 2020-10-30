@@ -15,8 +15,8 @@ var ActivityCategoryDefinitionSchema = new Schema(
     icon: {type: String, required: false},
 
     isSleepActivity: {type: Boolean, required: true},
-    isRootLevel: {type: Boolean, required: true},
     canDelete: {type: Boolean, required: true},
+    isInTrash: {type: Boolean, required: true}, 
 
     durationSetting: {type: String, required: true},
     specifiedDurationMinutes: {type: Number, required: false},
@@ -33,7 +33,7 @@ var ActivityCategoryDefinitionSchema = new Schema(
     isConfigured: {type: Boolean, required: true},
   }, 
   { 
-    collection: 'activityCategoryDefinition' 
+    collection: 'activityCategoryDefinition_2' 
   }
 );
 

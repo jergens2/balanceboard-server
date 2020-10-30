@@ -18,9 +18,11 @@ var NotebookEntrySchema = new Schema(
     data: {type: Schema.Types.Mixed, required: true},
   }, 
   { 
-    collection: 'notebook' 
+    collection: 'notebook_2' 
   }
 );
 
 //Export model
 module.exports = mongoose.model('NotebookEntry', NotebookEntrySchema);
+
+

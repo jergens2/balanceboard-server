@@ -31,77 +31,83 @@ exports.update = function (req, res, next) {
 
     // console.log("Updating sleep profile", newProfile);
 
-    SleepManagerProfile.findOne({ 'userId': userId }, (err, foundProfile)=>{
+    SleepManagerProfile.findOne({ 'userId': userId }, (err, foundProfile) => {
         if (err) {
             res.status(500).json({
                 message: "server error",
                 success: false,
-                data: err,
+                successData: null,
+                failData: err,
             });
         } else {
-            if(foundProfile){
+            if (foundProfile) {
                 const id = foundProfile._id;
                 newProfile._id = id;
-                newProfile.update(newProfile, (err, updatedProfile)=>{
+                newProfile.update(newProfile, (err, raw) => {
                     if (err) {
                         res.status(500).json({
                             message: "Error updating sleep profile",
                             success: false,
-                            data: err,
+                            successData: null,
+                            failData: err,
                         });
                     } else {
-                        if (updatedProfile) {
+                        if (raw) {
                             res.status(200).json({
                                 message: 'Successfully updated profile',
                                 success: true,
-                                data: updatedProfile,
+                                successData: newProfile,
+                                failData: null,
                             })
                         } else {
-                            
                             res.status(500).json({
                                 message: "Error updating sleep profile",
                                 success: false,
-                                data: err,
+                                successData: null,
+                                failData: err,
                             });
                         }
                     }
                 })
-            }else{
+            } else {
                 newProfile.save({}, (err, savedDoc) => {
                     if (err) {
-                        console.log("Error saving: " , err)
+                        console.log("Error saving: ", err)
                         res.status(500).json({
                             message: "Error saving new sleep profile",
                             success: false,
-                            data: err,
+                            successData: null,
+                            failData: err,
                         });
                     } else {
                         if (savedDoc) {
                             res.status(200).json({
                                 message: 'Successfully updated profile',
                                 success: true,
-                                data: savedDoc,
+                                successData: savedDoc,
+                                failData: null,
                             });
                         } else {
                             res.status(500).json({
                                 message: 'No item saved?',
                                 success: false,
-                                data: {},
+                                successData: null,
+                                failData: {},
                             });
                         }
                     }
                 });
             }
-            
-
         }
     })
 }
+
+
 exports.read = function (req, res, next) {
     // console.log(req.body)
     const userId = req.body.userId;
     // console.log("finding a profile by usrid", userId)
-    SleepManagerProfile.findOne({'userId': userId}, (err, profile) => {
+    SleepManagerProfile.findOne({ 'userId': userId }, (err, profile) => {
         if (err) {
             res.status(500).json({
                 message: "Error finding sleep profile",
@@ -119,7 +125,7 @@ exports.read = function (req, res, next) {
                 res.status(200).json({
                     message: 'No profile exists',
                     success: false,
-                    data: {},
+                    data: null,
                 })
             }
         }
