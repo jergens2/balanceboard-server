@@ -18,7 +18,7 @@ var NotebookEntrySchema = new Schema(
     data: {type: Schema.Types.Mixed, required: true},
   }, 
   { 
-    collection: 'notebook_2' 
+    collection: 'notebook' 
   }
 );
 

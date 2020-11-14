@@ -33,7 +33,7 @@ var ActivityCategoryDefinitionSchema = new Schema(
     isConfigured: {type: Boolean, required: true},
   }, 
   { 
-    collection: 'activityCategoryDefinition_2' 
+    collection: 'activityCategoryDefinition' 
   }
 );
 
