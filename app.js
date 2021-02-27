@@ -23,12 +23,13 @@ const daybookDayItemRoutes = require('./routes/daybookDayItemRoutes');
 const sleepManagementRoutes = require('./routes/sleepManagementRoutes');
 
 
-const config = require('./config.json');
-const dbUser = config.database.user;
-const dbPass = config.database.password;
-const dbHost = config.database.host;
+const dbConfig = require('./db_config_dev.json');
+const dbUser = dbConfig.database.user;
+const dbPass = dbConfig.database.password;
+const dbHost = dbConfig.database.host;
 const mongoDB = 'mongodb://'+dbUser+':'+dbPass+'@'+dbHost;
-mongoose.connect(mongoDB);
+console.log("CONNECTING TO: " + mongoDB)
+mongoose.connect(mongoDB, {useNewUrlParser: true});
 // Get Mongoose to use the global promise library
 mongoose.Promise = global.Promise;
 //Get the default connection

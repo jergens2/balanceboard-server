@@ -88,8 +88,9 @@ exports.delete = function (req, res, next) {
 exports.update = function (req, res, next) {
     // console.log("updating notebookEntry.  incoming request:", req.body );
 
+    const id = req.body._id;
     const updateNotebookEntry = new NotebookEntry({
-        _id: req.body.id,
+        _id: id,
         userId: req.body.userId,
         journalDateISO: req.body.journalDate,
         dateCreatedISO: req.body.dateCreated,
@@ -101,13 +102,18 @@ exports.update = function (req, res, next) {
         data: req.body.data,
     });
 
+    // console.log("Update entry: ", updateNotebookEntry)
 
+    NotebookEntry.findByIdAndUpdate(id, updateNotebookEntry, { new: true }, (err, notebookEntry) => {
 
-    NotebookEntry.findByIdAndUpdate(req.body.id, updateNotebookEntry, { new: true }, (err, notebookEntry) => {
-
-        if (err) return res.status(500).json({ message: 'DB error updating NotebookEntry object', data: err });
-        if (!notebookEntry) return res.status(500).json({ message: "Error updating NotebookEntry object", data: req.body.id });
-
+        if (err) {
+            // console.log("Error: ", err)    
+            return res.status(500).json({ message: 'DB error updating NotebookEntry object', data: err });
+        }
+        if (!notebookEntry) {
+            // console.log("ERROR: no notebook entry: ", updateNotebookEntry, notebookEntry)   
+            return res.status(500).json({ message: "Error updating NotebookEntry object", data: req.body.id });
+        }
         // console.log("updated notebookEntry: ", notebookEntry);
         return res.status(200).json({ message: "Successfully update NotebookEntry object", data: notebookEntry });
     });

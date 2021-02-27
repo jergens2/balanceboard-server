@@ -1,0 +1,8 @@
+{
+    "database":{
+        "host":"138.197.163.77:27017/balanceboard",
+        "user": "balanceboard_app",
+        "password": "cxYxwZqsg5zCQMzD7gUtcpXUkFPXxAh2YwzBnJdR3fasQNd2GwdhA3NwBVbsHB3V"
+    }
+}
+  
