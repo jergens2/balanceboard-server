@@ -23,7 +23,7 @@ const daybookDayItemRoutes = require('./routes/daybookDayItemRoutes');
 const sleepManagementRoutes = require('./routes/sleepManagementRoutes');
 
 
-const dbConfig = require('./db_config_dev.json');
+const dbConfig = require('./db_config_prod.json');
 const dbUser = dbConfig.database.user;
 const dbPass = dbConfig.database.password;
 const dbHost = dbConfig.database.host;

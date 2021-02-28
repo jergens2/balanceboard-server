@@ -41,6 +41,7 @@ testem.log
 Thumbs.db
 package-lock.json
 
-config.json
+db_config_dev.json
+db_config_prod.json
 
 /key
